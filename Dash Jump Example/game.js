@@ -1,5 +1,5 @@
 import { character } from "./character";
-import platform from "platform";
+import platform from "./platform";
 
 function setup() {
     createCanvas(400, 400);
