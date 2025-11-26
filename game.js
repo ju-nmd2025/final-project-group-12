@@ -56,7 +56,8 @@ function showEndScreen() {
   let turnOffGameOver = false;
 
   if (turnOffGameOver === false) {
-    //Stop player movement
+    //Stop player movement and hide the player
+    jumperDiameter = 0;
     ySpeed = 0;
     gravityAcceleration = 0;
     xAcceleration = 0;
