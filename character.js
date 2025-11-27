@@ -9,13 +9,13 @@ let gravityAcceleration = 0.9; // Gravity effect
 
 
 
-function jumper(x, y, diameter) {
+function characterShape(x, y, diameter) {
   fill(100, 150, 255);
   circle(x, y, diameter);
   fill(255);
 }
 
-function CharacterCollision(platforms) {
+function characterCollision(platforms) {
   if (yPos + platformDiameter / 2 > height) {
     ySpeed = -25;
     yPos = height - platformDiameter / 2;
@@ -37,7 +37,7 @@ function CharacterCollision(platforms) {
   }
 }
 
-function CharacterMovement() {
+function characterMovement() {
   ySpeed += gravityAcceleration; // Apply gravity
   yPos += ySpeed; // Update vertical position
 
