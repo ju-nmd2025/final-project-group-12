@@ -2,7 +2,7 @@ let xPos = 100; // Initial horizontal position
 let yPos = 400; // Initial vertical position
 let ySpeed = 1; // Initial vertical speed
 let xSpeed = 0; // Current horizontal speed
-let platformDiameter = 75;
+let characterDiameter = 75;
 let xAcceleration = 1.2; // How fast the character speeds up horizontally
 let xFriction = 0.9; // Friction to slow down horizontal movement after key release
 let gravityAcceleration = 0.9; // Gravity effect
@@ -15,22 +15,44 @@ function characterShape(x, y, diameter) {
   fill(255);
 }
 
+function showEndScreen() {
+  if (yPos + characterDiameter / 2 > height) {
+    let turnOffGameOver = false;
+
+    if (turnOffGameOver === false) {
+      //Show the end screen
+      push();
+      fill("black");
+      quad(0, 0, 500, 0, 500, 700, 0, 700);
+      pop();
+      push();
+      fill("red");
+      textStyle(BOLD);
+      textSize(50);
+      textAlign(CENTER);
+      text("YOU ARE DEAD!", 500 / 2, 100);
+      pop();
+    }
+  }
+}
+
 function characterCollision(platforms) {
-  if (yPos + platformDiameter / 2 > height) {
-    ySpeed = -25;
-    yPos = height - platformDiameter / 2;
+  // Ground Collision Logic
+  if (yPos + characterDiameter / 2 > height) {
+    // ySpeed = -25;
+    // yPos = height - platformDiameter / 2;
   }
 
   // Platform Collision Logic
   for (let p of platforms) {
     // Remove platform() drawing call — already drawn in drawPlatforms()
-    let ballBottom = yPos + platformDiameter / 2;
+    let ballBottom = yPos + characterDiameter / 2;
 
     if (ySpeed > 0) {
       if (xPos > p.x && xPos < p.x + 100) {
         if (ballBottom >= p.y && ballBottom <= p.y + 25) {
           ySpeed = -25;
-          yPos = p.y - platformDiameter / 2;
+          yPos = p.y - characterDiameter / 2;
         }
       }
     }
@@ -64,7 +86,7 @@ function characterMovement() {
   xPos += xSpeed; // Update horizontal position
 
   // --- Screen "Wrap-Around" Logic ---
-  let half = platformDiameter / 2;
+  let half = characterDiameter / 2;
 
   // Check if the character moves past the right edge
   if (xPos - half > width) {

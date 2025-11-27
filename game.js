@@ -1,6 +1,6 @@
-import { debugInfo }  from "./utils.js";
-import { setYPos, platforms, platformsPositionGen, platformsDraw, platformScroll } from "./platforms.js";
-import { characterShape, characterCollision, characterMovement } from "./character.js";
+// import { debugInfo }  from "./utils.js";
+// import { setYPos, platforms, platformsPositionGen, platformsDraw, platformScroll } from "./platforms.js";
+// import { characterShape, characterCollision, characterMovement, characterDiameter } from "./character.js";
 
 function setup() {
   // Set up the canvas
@@ -30,5 +30,6 @@ function draw() {
 
   characterCollision(platforms);
   // Draw the jumper
-  characterShape(xPos, yPos, 75);
+  characterShape(xPos, yPos, characterDiameter);
+  showEndScreen();
 }
