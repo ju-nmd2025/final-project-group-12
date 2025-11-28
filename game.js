@@ -1,6 +1,6 @@
-// import { debugInfo }  from "./utils.js";
-// import { setYPos, platforms, platformsPositionGen, platformsDraw, platformScroll } from "./platforms.js";
-// import { characterShape, characterCollision, characterMovement, characterDiameter } from "./character.js";
+import { debugInfo }  from "./utils.js";
+import { setYPos, platforms, platformsPositionGen, platformsDraw, platformScroll } from "./platforms.js";
+import { characterShape, characterCollision, characterMovement, characterDiameter, showEndScreen, yPos, xPos, ySpeed, xSpeed } from "./character.js";
 
 function setup() {
   // Set up the canvas
@@ -20,13 +20,13 @@ function draw() {
   // Update character movement
   characterMovement();
   // Show debug information
-  debugInfo(ySpeed, xSpeed, xPos, yPos);
+  debugInfo(ySpeed, xSpeed, xPos, yPos, scrollResult.shift);
   // Draw platforms and check for collisions
   platformsDraw(platforms);
 
   // Vertical Screen Scrolling Logic
-  const newYPos = platformScroll(platforms, yPos);
-  setYPos(newYPos);
+  const scrollResult = platformScroll(platforms, yPos);
+  setYPos(scrollResult.newYPos);
 
   characterCollision(platforms);
   // Draw the jumper
