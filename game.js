@@ -20,12 +20,13 @@ function draw() {
   // Update character movement
   characterMovement();
   // Show debug information
+  const scrollResult = platformScroll(platforms, yPos);
   debugInfo(ySpeed, xSpeed, xPos, yPos, scrollResult.shift);
   // Draw platforms and check for collisions
   platformsDraw(platforms);
 
   // Vertical Screen Scrolling Logic
-  const scrollResult = platformScroll(platforms, yPos);
+  
   setYPos(scrollResult.newYPos);
 
   characterCollision(platforms);
