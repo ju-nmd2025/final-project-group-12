@@ -6,31 +6,40 @@ function setYPos(newYPos) {
 
 let platforms = []; // An empty list to start
 
-function platformsPositionGen() {
-  return [
-    { x: randomFromRange(50, 400), y: 400 },
-    { x: randomFromRange(50, 400), y: 200 },
-    { x: randomFromRange(50, 400), y: 600 },
-    { x: randomFromRange(50, 400), y: 500 },
-    { x: randomFromRange(50, 400), y: 100 },
-  ];
+class Platform {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.width = 100;
+    this.height =20;
+  }
+  draw() {
+    fill(150, 75, 0);
+    rect(this.x, this.y, this.width, this.height);
+  }
 }
 
-function platformShape(x, y, height) {
-  fill(150, 75, 0);
-  rect(x, y, 100, height);
+function platformsPositionGen() {
+  return [
+    new Platform(randomFromRange(50, 400), 400),
+    new Platform(randomFromRange(50, 400), 200),
+    new Platform(randomFromRange(50, 400), 600),
+    new Platform(randomFromRange(50, 400), 500),
+    new Platform(randomFromRange(50, 400), 100),
+  ];
 }
 
 function platformsDraw(platforms) {
   for (let p of platforms) {
-    platformShape(p.x, p.y, 20);
+    p.draw();
   }
 }
 
 function platformScroll(platforms, yPos) {
+  let shift = 0;
   if (yPos < 200) {
     isCameraScrolled = true;
-    let shift = 200 - yPos;
+    shift = 200 - yPos;
     yPos = 200;
 
     for (let p of platforms) {
@@ -40,7 +49,6 @@ function platformScroll(platforms, yPos) {
         p.x = randomFromRange(50, 400);
       }
     }
-    return yPos;
   }
-  return yPos;
+  return { newYPos: yPos, shift: shift };
 }
