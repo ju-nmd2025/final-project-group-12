@@ -1,3 +1,5 @@
+import { isCameraScrolled } from "./platforms.js";
+
 let xPos = 100; // Initial horizontal position
 let yPos = 400; // Initial vertical position
 let ySpeed = 1; // Initial vertical speed
@@ -7,8 +9,6 @@ let xAcceleration = 1.2; // How fast the character speeds up horizontally
 let xFriction = 0.9; // Friction to slow down horizontal movement after key release
 let gravityAcceleration = 0.9; // Gravity effect
 
-
-
 function characterShape(x, y, diameter) {
   fill(100, 150, 255);
   circle(x, y, diameter);
@@ -16,7 +16,7 @@ function characterShape(x, y, diameter) {
 }
 
 function showEndScreen() {
-  if (yPos + characterDiameter / 2 > height) {
+  if (yPos + characterDiameter / 2 > height && isCameraScrolled === true) {
     let turnOffGameOver = false;
 
     if (turnOffGameOver === false) {
@@ -38,9 +38,9 @@ function showEndScreen() {
 
 function characterCollision(platforms) {
   // Ground Collision Logic
-  if (yPos + characterDiameter / 2 > height) {
-    // ySpeed = -25;
-    // yPos = height - platformDiameter / 2;
+  if (yPos + characterDiameter / 2 > height && isCameraScrolled === false) {
+    ySpeed = -25;
+    yPos = height - characterDiameter / 2;
   }
 
   // Platform Collision Logic

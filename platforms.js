@@ -1,3 +1,5 @@
+let isCameraScrolled = false;
+
 function setYPos(newYPos) {
   yPos = newYPos;
 }
@@ -14,9 +16,9 @@ function platformsPositionGen() {
   ];
 }
 
-function platformShape(x, y, diameter) {
+function platformShape(x, y, height) {
   fill(150, 75, 0);
-  rect(x, y, 100, diameter);
+  rect(x, y, 100, height);
 }
 
 function platformsDraw(platforms) {
@@ -27,6 +29,7 @@ function platformsDraw(platforms) {
 
 function platformScroll(platforms, yPos) {
   if (yPos < 200) {
+    isCameraScrolled = true;
     let shift = 200 - yPos;
     yPos = 200;
 
