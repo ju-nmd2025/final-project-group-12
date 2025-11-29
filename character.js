@@ -51,8 +51,13 @@ function characterCollision(platforms) {
     if (ySpeed > 0) {
       if (xPos > p.x && xPos < p.x + 100) {
         if (ballBottom >= p.y && ballBottom <= p.y + 25) {
-          ySpeed = -25;
-          yPos = p.y - characterDiameter / 2;
+          if (p.touched == false) {
+            if (p.type === "breaking") {
+              p.touched = true;
+            }
+            ySpeed = -25;
+            yPos = p.y - characterDiameter / 2;
+          }
         }
       }
     }

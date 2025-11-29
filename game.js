@@ -26,7 +26,6 @@ function draw() {
   platformsDraw(platforms);
 
   // Vertical Screen Scrolling Logic
-  
   setYPos(scrollResult.newYPos);
 
   characterCollision(platforms);
