@@ -15,23 +15,23 @@ function setup() {
 }
 
 function draw() {
-  // Clear the background each frame
-  background(240, 255, 240);
-  // Update character movement
-  characterMovement();
-  // Show debug information
-  const scrollResult = platformScroll(platforms, yPos);
-  if (debugMode == true){
+  background(240, 255, 240); // Clear the background each frame
+
+  characterMovement(); // Update character movement
+
+  platformsDraw(platforms); // Draw platforms and check for collisions
+
+  // Handle platform scrolling
+  const scrollResult = platformScroll(platforms, yPos); // Creates a variable scrollResult that returns newYPos and shift (see the funnction in platforms.js)
+  setYPos(scrollResult.newYPos); // Extracts the newYPos variable from the platformScroll function and sends it to the platfroms.js through the setYPos to update the yPos value there
+  
+  characterCollision(platforms); // Check for collision
+
+  characterShape(xPos, yPos, characterDiameter); //Draw the character
+
+  if (debugMode == true){ // Show debug info if debugMode is true
     debugInfo(ySpeed, xSpeed, xPos, yPos, scrollResult.shift);
   }
-  // Draw platforms and check for collisions
-  platformsDraw(platforms);
 
-  // Vertical Screen Scrolling Logic
-  setYPos(scrollResult.newYPos);
-
-  characterCollision(platforms);
-  // Draw the jumper
-  characterShape(xPos, yPos, characterDiameter);
-  showEndScreen();
+  showEndScreen(); // Draw the end screen
 }
