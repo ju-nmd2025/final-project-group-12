@@ -21,15 +21,13 @@ class button {
   xSize;
   ySize;
   color;
-  triggers;
 
-  constructor(xPos, yPos, xSize, ySize, color, triggers) {
+  constructor(xPos, yPos, xSize, ySize, color) {
     this.xPos = xPos;
     this.yPos = yPos;
     this.xSize = xSize;
     this.ySize = ySize;
     this.color = color;
-    this.triggers = triggers;
   }
 
   draw() {
@@ -50,7 +48,15 @@ class button {
 }
 
 // Buttons
-const retryButton = new button(250, 350, 70, 50, "green");
+const retryButton = new button(250, 350, 70, 50, "green", restart());
+
+function restart() {
+  isCameraScrolled = false;
+  xPos = 100;
+  yPos = 400;
+  ySpeed = 1;
+  xSpeed = 0;
+}
 
 function mouseClicked() {
   if (
@@ -59,7 +65,7 @@ function mouseClicked() {
     mouseY >= retryButton.yPos - retryButton.ySize / 2 &&
     mouseY <= retryButton.yPos + retryButton.ySize / 2
   ) {
-    console.log("Im a button!");
+    restart();
   }
 }
 
@@ -84,13 +90,6 @@ function showEndScreen() {
       retryButton.draw();
     }
   }
-}
-
-function restart() {
-  xPos = 100;
-  yPos = 400;
-  ySpeed = 1;
-  xSpeed = 0;
 }
 
 function characterCollision(platforms) {
