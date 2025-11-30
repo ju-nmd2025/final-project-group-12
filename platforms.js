@@ -24,9 +24,9 @@ class Platform {
   draw(alpha = false) { 
     if (this.type === "breaking") {
       
-      if (alpha = true) {
+      if (alpha == true) {
         // If alpha is true, apply transparency (used for breaking types when they are touched)
-        let c = color(200, 50, 50, alpha);
+        let c = color(200, 50, 50, 50);
         fill(c);
 
       } else {
