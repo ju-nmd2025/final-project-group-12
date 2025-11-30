@@ -9,12 +9,58 @@ let xAcceleration = 1.2; // How fast the character speeds up horizontally
 let xFriction = 0.9; // Friction to slow down horizontal movement after key release
 let gravityAcceleration = 0.9; // Gravity effect
 
-let mouseClick = false;
-
 function characterShape(x, y, diameter) {
   fill(100, 150, 255);
   circle(x, y, diameter);
   fill(255);
+}
+
+class button {
+  xPos;
+  yPos;
+  xSize;
+  ySize;
+  color;
+  triggers;
+
+  constructor(xPos, yPos, xSize, ySize, color, triggers) {
+    this.xPos = xPos;
+    this.yPos = yPos;
+    this.xSize = xSize;
+    this.ySize = ySize;
+    this.color = color;
+    this.triggers = triggers;
+  }
+
+  draw() {
+    push();
+    fill(this.color);
+    quad(
+      this.xPos - this.xSize / 2,
+      this.yPos - this.ySize / 2,
+      this.xPos + this.xSize / 2,
+      this.yPos - this.ySize / 2,
+      this.xPos + this.xSize / 2,
+      this.yPos + this.ySize / 2,
+      this.xPos - this.xSize / 2,
+      this.yPos + this.ySize / 2
+    );
+    pop();
+  }
+}
+
+// Buttons
+const retryButton = new button(250, 350, 70, 50, "green");
+
+function mouseClicked() {
+  if (
+    mouseX >= retryButton.xPos - retryButton.ySize / 2 &&
+    mouseX <= retryButton.xPos + retryButton.ySize / 2 &&
+    mouseY >= retryButton.yPos - retryButton.ySize / 2 &&
+    mouseY <= retryButton.yPos + retryButton.ySize / 2
+  ) {
+    console.log("Im a button!");
+  }
 }
 
 function showEndScreen() {
@@ -35,7 +81,7 @@ function showEndScreen() {
       textAlign(CENTER);
       text("YOU ARE DEAD!", 500 / 2, 100);
       pop();
-      button(250, 350, 80, 50, "green");
+      retryButton.draw();
     }
   }
 }
@@ -45,33 +91,6 @@ function restart() {
   yPos = 400;
   ySpeed = 1;
   xSpeed = 0;
-}
-
-function button(xPos, yPos, xSize, ySize, color, triggers) {
-  push();
-  fill(color);
-  quad(
-    xPos - xSize / 2,
-    yPos - ySize / 2,
-    xPos + xSize / 2,
-    yPos - ySize / 2,
-    xPos + xSize / 2,
-    yPos + ySize / 2,
-    xPos - xSize / 2,
-    yPos + ySize / 2
-  );
-  pop();
-}
-
-function mouseClicked(){
-  if (
-    mouseX >= xPos - ySize / 2 &&
-    mouseX <= xPos + ySize / 2 &&
-    mouseY >= yPos - ySize / 2 &&
-    mouseY <= yPos + ySize / 2
-  ) {
-    console.log("Im a button!");
-  }
 }
 
 function characterCollision(platforms) {
