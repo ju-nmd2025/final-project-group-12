@@ -9,6 +9,8 @@ let xAcceleration = 1.2; // How fast the character speeds up horizontally
 let xFriction = 0.9; // Friction to slow down horizontal movement after key release
 let gravityAcceleration = 0.9; // Gravity effect
 
+let mouseClick = false;
+
 function characterShape(x, y, diameter) {
   fill(100, 150, 255);
   circle(x, y, diameter);
@@ -16,6 +18,7 @@ function characterShape(x, y, diameter) {
 }
 
 function showEndScreen() {
+  // If the player have made the camera scroll the player can trigger a game over
   if (yPos + characterDiameter / 2 > height && isCameraScrolled === true) {
     let turnOffGameOver = false;
 
@@ -32,7 +35,42 @@ function showEndScreen() {
       textAlign(CENTER);
       text("YOU ARE DEAD!", 500 / 2, 100);
       pop();
+      button(250, 350, 80, 50, "green");
     }
+  }
+}
+
+function restart() {
+  xPos = 100;
+  yPos = 400;
+  ySpeed = 1;
+  xSpeed = 0;
+}
+
+function button(xPos, yPos, xSize, ySize, color, triggers) {
+  push();
+  fill(color);
+  quad(
+    xPos - xSize / 2,
+    yPos - ySize / 2,
+    xPos + xSize / 2,
+    yPos - ySize / 2,
+    xPos + xSize / 2,
+    yPos + ySize / 2,
+    xPos - xSize / 2,
+    yPos + ySize / 2
+  );
+  pop();
+}
+
+function mouseClicked(){
+  if (
+    mouseX >= xPos - ySize / 2 &&
+    mouseX <= xPos + ySize / 2 &&
+    mouseY >= yPos - ySize / 2 &&
+    mouseY <= yPos + ySize / 2
+  ) {
+    console.log("Im a button!");
   }
 }
 
