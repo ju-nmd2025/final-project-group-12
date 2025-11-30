@@ -1,4 +1,4 @@
-const breakingPlatfrormChance = 1;
+const breakingPlatfrormChance = 0.1;
 
 let isCameraScrolled = false;
 
@@ -12,8 +12,8 @@ class Platform {
   constructor(x, y, type = "normal") {
     this.x = x;
     this.y = y;
-    this.width = 100;
-    this.height = 20;
+    this.width = 70;
+    this.height = 15;
     this.type = type;
     this.touched = false;
   }

@@ -1,4 +1,4 @@
-import { debugInfo }  from "./utils.js";
+import { debugInfo, debugMode }  from "./utils.js";
 import { setYPos, platforms, platformsPositionGen, platformsDraw, platformScroll } from "./platforms.js";
 import { characterShape, characterCollision, characterMovement, characterDiameter, showEndScreen, yPos, xPos, ySpeed, xSpeed } from "./character.js";
 
@@ -21,7 +21,9 @@ function draw() {
   characterMovement();
   // Show debug information
   const scrollResult = platformScroll(platforms, yPos);
-  debugInfo(ySpeed, xSpeed, xPos, yPos, scrollResult.shift);
+  if (debugMode == true){
+    debugInfo(ySpeed, xSpeed, xPos, yPos, scrollResult.shift);
+  }
   // Draw platforms and check for collisions
   platformsDraw(platforms);
 
