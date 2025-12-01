@@ -19,8 +19,11 @@ function characterShape(x, y, diameter) {
 class button {
   xPos;
   yPos;
-  xSize;
   ySize;
+  xCalculatePosetive;
+  xCalculateNegative;
+  yCalculatePosetive;
+  yCalculateNegative;
   color;
   text;
   visible = false;
@@ -28,8 +31,11 @@ class button {
   constructor(xPos, yPos, xSize, ySize, color, text) {
     this.xPos = xPos;
     this.yPos = yPos;
-    this.xSize = xSize;
     this.ySize = ySize;
+    this.xCalculatePosetive = xPos + xSize / 2;
+    this.xCalculateNegative = xPos - xSize / 2;
+    this.yCalculatePosetive = yPos + ySize / 2;
+    this.yCalculateNegative = yPos - ySize / 2;
     this.color = color;
     this.text = text;
   }
@@ -38,23 +44,24 @@ class button {
     push();
     fill(this.color);
     quad(
-      this.xPos - this.xSize / 2,
-      this.yPos - this.ySize / 2,
-      this.xPos + this.xSize / 2,
-      this.yPos - this.ySize / 2,
-      this.xPos + this.xSize / 2,
-      this.yPos + this.ySize / 2,
-      this.xPos - this.xSize / 2,
-      this.yPos + this.ySize / 2
+      this.xCalculateNegative,
+      this.yCalculateNegative,
+      this.xCalculatePosetive,
+      this.yCalculateNegative,
+      this.xCalculatePosetive,
+      this.yCalculatePosetive,
+      this.xCalculateNegative,
+      this.yCalculatePosetive
     );
     pop();
     push();
     fill("white");
     textStyle(BOLD);
-    textSize(this.ySize - 10);
+    textSize(30);
     textAlign(CENTER, CENTER);
     text(this.text, this.xPos, this.yPos);
     pop();
+    // Tell the button that it is visible
     this.visible = true;
   }
 }
@@ -77,18 +84,18 @@ function restart() {
 function mouseClicked() {
   //Retry button
   if (
-    mouseX >= retryButton.xPos - retryButton.xSize / 2 &&
-    mouseX <= retryButton.xPos + retryButton.xSize / 2 &&
-    mouseY >= retryButton.yPos - retryButton.ySize / 2 &&
-    mouseY <= retryButton.yPos + retryButton.ySize / 2 &&
+    mouseX >= retryButton.xCalculateNegative &&
+    mouseX <= retryButton.xCalculatePosetive &&
+    mouseY >= retryButton.yCalculateNegative &&
+    mouseY <= retryButton.yCalculatePosetive &&
     retryButton.visible === true
   ) {
     restart();
   } else if (
-    mouseX >= startButton.xPos - startButton.xSize / 2 &&
-    mouseX <= startButton.xPos + startButton.xSize / 2 &&
-    mouseY >= startButton.yPos - startButton.ySize / 2 &&
-    mouseY <= startButton.yPos + startButton.ySize / 2 &&
+    mouseX >= startButton.xCalculateNegative &&
+    mouseX <= startButton.xCalculatePosetive &&
+    mouseY >= startButton.yCalculateNegative &&
+    mouseY <= startButton.yCalculatePosetive &&
     startButton.visible === true
   ) {
     restart();
