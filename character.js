@@ -8,6 +8,7 @@ let characterDiameter = 75;
 let xAcceleration = 1.2; // How fast the character speeds up horizontally
 let xFriction = 0.9; // Friction to slow down horizontal movement after key release
 let gravityAcceleration = 0.9; // Gravity effect
+let startScreenVisible = true; // Stop player movement and show start screen
 
 function characterShape(x, y, diameter) {
   fill(100, 150, 255);
@@ -59,9 +60,12 @@ class button {
 }
 
 // Buttons
+const startButton = new button(250, 350, 200, 50, "blue", "Start");
 const retryButton = new button(250, 350, 200, 50, "green", "Retry");
 
 function restart() {
+  startScreenVisible = false;
+  startButton.visible = false;
   retryButton.visible = false;
   isCameraScrolled = false;
   xPos = 100;
@@ -71,6 +75,7 @@ function restart() {
 }
 
 function mouseClicked() {
+  //Retry button
   if (
     mouseX >= retryButton.xPos - retryButton.xSize / 2 &&
     mouseX <= retryButton.xPos + retryButton.xSize / 2 &&
@@ -79,6 +84,31 @@ function mouseClicked() {
     retryButton.visible === true
   ) {
     restart();
+  } else if (
+    mouseX >= startButton.xPos - startButton.xSize / 2 &&
+    mouseX <= startButton.xPos + startButton.xSize / 2 &&
+    mouseY >= startButton.yPos - startButton.ySize / 2 &&
+    mouseY <= startButton.yPos + startButton.ySize / 2 &&
+    startButton.visible === true
+  ) {
+    restart();
+  }
+}
+
+function showStartScreen() {
+  if (startScreenVisible === true) {
+    push();
+    fill("white");
+    quad(0, 0, 500, 0, 500, 700, 0, 700);
+    pop();
+    push();
+    fill("black");
+    textStyle(BOLD);
+    textSize(50);
+    textAlign(CENTER);
+    text("Game Title", 500 / 2, 100);
+    pop();
+    startButton.draw();
   }
 }
 
@@ -129,8 +159,14 @@ function characterCollision(platforms) {
 }
 
 function characterMovement() {
-  ySpeed += gravityAcceleration; // Apply gravity
-  yPos += ySpeed; // Update vertical position
+  // Dont move the player when start screen is visible
+  if (startScreenVisible === true) {
+    xPos = 100;
+    yPos = 200;
+  } else {
+    ySpeed += gravityAcceleration; // Apply gravity
+    yPos += ySpeed; // Update vertical position
+  }
 
   // --- Ground Collision Logic ---
 
