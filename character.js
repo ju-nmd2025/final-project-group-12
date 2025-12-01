@@ -21,13 +21,15 @@ class button {
   xSize;
   ySize;
   color;
+  text;
 
-  constructor(xPos, yPos, xSize, ySize, color) {
+  constructor(xPos, yPos, xSize, ySize, color, text) {
     this.xPos = xPos;
     this.yPos = yPos;
     this.xSize = xSize;
     this.ySize = ySize;
     this.color = color;
+    this.text = text;
   }
 
   draw() {
@@ -44,11 +46,18 @@ class button {
       this.yPos + this.ySize / 2
     );
     pop();
+    push();
+    fill("white");
+    textStyle(BOLD);
+    textSize(this.ySize - 10);
+    textAlign(CENTER, CENTER);
+    text(this.text, this.xPos, this.yPos);
+    pop();
   }
 }
 
 // Buttons
-const retryButton = new button(250, 350, 70, 50, "green", restart());
+const retryButton = new button(250, 350, 200, 50, "green", "Retry");
 
 function restart() {
   isCameraScrolled = false;
