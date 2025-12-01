@@ -57,7 +57,7 @@ class button {
     push();
     fill("white");
     textStyle(BOLD);
-    textSize(30);
+    textSize(this.ySize - 10);
     textAlign(CENTER, CENTER);
     text(this.text, this.xPos, this.yPos);
     pop();
@@ -67,7 +67,7 @@ class button {
 }
 
 // Buttons
-const startButton = new button(250, 350, 200, 50, "blue", "Start");
+const startButton = new button(250, 350, 250, 100, "blue", "Start");
 const retryButton = new button(250, 350, 200, 50, "green", "Retry");
 
 function restart() {
