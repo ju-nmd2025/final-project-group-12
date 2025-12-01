@@ -22,6 +22,7 @@ class button {
   ySize;
   color;
   text;
+  visible = false;
 
   constructor(xPos, yPos, xSize, ySize, color, text) {
     this.xPos = xPos;
@@ -53,6 +54,7 @@ class button {
     textAlign(CENTER, CENTER);
     text(this.text, this.xPos, this.yPos);
     pop();
+    this.visible = true;
   }
 }
 
@@ -60,6 +62,7 @@ class button {
 const retryButton = new button(250, 350, 200, 50, "green", "Retry");
 
 function restart() {
+  retryButton.visible = false;
   isCameraScrolled = false;
   xPos = 100;
   yPos = 400;
@@ -72,7 +75,8 @@ function mouseClicked() {
     mouseX >= retryButton.xPos - retryButton.xSize / 2 &&
     mouseX <= retryButton.xPos + retryButton.xSize / 2 &&
     mouseY >= retryButton.yPos - retryButton.ySize / 2 &&
-    mouseY <= retryButton.yPos + retryButton.ySize / 2
+    mouseY <= retryButton.yPos + retryButton.ySize / 2 &&
+    retryButton.visible === true
   ) {
     restart();
   }
