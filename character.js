@@ -1,10 +1,11 @@
 import { isCameraScrolled } from "./platforms.js";
+import { debugMode } from "./utils.js";
 
 let xPos = 100; // Initial horizontal position
 let yPos = 400; // Initial vertical position
 let ySpeed = 1; // Initial vertical speed
 let xSpeed = 0; // Current horizontal speed
-let characterDiameter = 75;
+let characterDiameter = 50;
 let xAcceleration = 1.2; // How fast the character speeds up horizontally
 let xFriction = 0.9; // Friction to slow down horizontal movement after key release
 let gravityAcceleration = 0.9; // Gravity effect
@@ -17,10 +18,7 @@ function characterShape(x, y, diameter) {
 
 function showEndScreen() {
   if (yPos + characterDiameter / 2 > height && isCameraScrolled === true) {
-    let turnOffGameOver = false;
-
-    if (turnOffGameOver === false) {
-      //Show the end screen
+    if (debugMode == false) {
       push();
       fill("black");
       quad(0, 0, 500, 0, 500, 700, 0, 700);
@@ -32,6 +30,9 @@ function showEndScreen() {
       textAlign(CENTER);
       text("YOU ARE DEAD!", 500 / 2, 100);
       pop();
+    } else {
+      ySpeed = -25;
+      yPos = height - characterDiameter / 2;
     }
   }
 }
@@ -51,8 +52,13 @@ function characterCollision(platforms) {
     if (ySpeed > 0) {
       if (xPos > p.x && xPos < p.x + 100) {
         if (ballBottom >= p.y && ballBottom <= p.y + 25) {
-          ySpeed = -25;
-          yPos = p.y - characterDiameter / 2;
+          if (p.touched == false) {
+            if (p.type === "breaking") {
+              p.touched = true;
+            }
+            ySpeed = -25;
+            yPos = p.y - characterDiameter / 2;
+          }
         }
       }
     }
