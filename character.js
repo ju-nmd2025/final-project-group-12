@@ -69,8 +69,8 @@ function restart() {
 
 function mouseClicked() {
   if (
-    mouseX >= retryButton.xPos - retryButton.ySize / 2 &&
-    mouseX <= retryButton.xPos + retryButton.ySize / 2 &&
+    mouseX >= retryButton.xPos - retryButton.xSize / 2 &&
+    mouseX <= retryButton.xPos + retryButton.xSize / 2 &&
     mouseY >= retryButton.yPos - retryButton.ySize / 2 &&
     mouseY <= retryButton.yPos + retryButton.ySize / 2
   ) {
