@@ -11,7 +11,7 @@ class Platform {
     this.x = x;
     this.y = y;
     this.width = 100;
-    this.height =20;
+    this.height = 20;
   }
   draw() {
     fill(150, 75, 0);

@@ -1,4 +1,4 @@
-import { isCameraScrolled } from "./platforms.js";
+import { isCameraScrolled, platforms, platformsPositionGen, } from "./platforms.js";
 
 let xPos = 100; // Initial horizontal position
 let yPos = 400; // Initial vertical position
@@ -17,17 +17,6 @@ function characterShape(x, y, diameter) {
 }
 
 class button {
-  xPos;
-  yPos;
-  ySize;
-  xCalculatePosetive;
-  xCalculateNegative;
-  yCalculatePosetive;
-  yCalculateNegative;
-  color;
-  text;
-  visible = false;
-
   constructor(xPos, yPos, xSize, ySize, color, text) {
     this.xPos = xPos;
     this.yPos = yPos;
@@ -38,6 +27,7 @@ class button {
     this.yCalculateNegative = yPos - ySize / 2;
     this.color = color;
     this.text = text;
+    this.visible = false;
   }
 
   draw() {
@@ -79,6 +69,8 @@ function restart() {
   yPos = 400;
   ySpeed = 1;
   xSpeed = 0;
+  platforms.length = 0;
+  platforms.push(...platformsPositionGen());
 }
 
 function mouseClicked() {
