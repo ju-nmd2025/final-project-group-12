@@ -101,7 +101,7 @@ function platformScroll(platforms, yPos) {
       // If a platform moves below the canvas, reset it to the top with a new random x position and type
       if (p.y >= height) {
         // Find the y position of the highest platform on the screen
-        let highestPlatformY = -25;
+        let highestPlatformY = Infinity;
         for (let otherP of platforms) {
           if (otherP.y < highestPlatformY) {
             highestPlatformY = otherP.y;
