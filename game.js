@@ -1,6 +1,6 @@
 import { debugInfo, debugMode }  from "./utils.js";
 import { setYPos, platforms, platformsPositionGen, platformsDraw, platformScroll } from "./platforms.js";
-import { characterShape, characterCollision, characterMovement, characterDiameter, showEndScreen, yPos, xPos, ySpeed, xSpeed } from "./character.js";
+import { characterShape, characterCollision, characterMovement, characterDiameter, showStartScreen, showEndScreen, yPos, xPos, ySpeed, xSpeed } from "./character.js";
 
 function setup() {
   // Set up the canvas
@@ -33,5 +33,6 @@ function draw() {
     debugInfo(ySpeed, xSpeed, xPos, yPos, scrollResult.shift);
   }
 
+  showStartScreen(); // Draw the start screen
   showEndScreen(); // Draw the end screen
 }
