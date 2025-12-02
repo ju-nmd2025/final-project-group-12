@@ -1,4 +1,5 @@
 const breakingPlatfrormChance = 0.1; // A probability of platform being spawned as the breaking type
+const movingPlatformChance = 0.1; // A probability of platform being spawned as the moving type
 
 let isCameraScrolled = false; // A toggle to check if the camera has scrolled, so we know when to apply ground collision logic
 
@@ -19,21 +20,21 @@ class Platform {
     this.height = 15; // Platform height
     this.type = type;
     this.touched = false; // To track if a breaking platform has been touched
+    this.randomValue = randomFromRange(0, 100); // Random value for moving platform movement variation
   }
   // Draw method (alpha parameter for breaking platform fade effect)
-  draw(alpha = false) { 
+  draw(alpha = false) {
     if (this.type === "breaking") {
-      
       if (alpha == true) {
         // If alpha is true, apply transparency (used for breaking types when they are touched)
         let c = color(200, 50, 50, 50);
         fill(c);
-
       } else {
         // If breaking platfrom is not touched, draw normally
         fill(200, 50, 50);
       }
-
+    } else if (this.type === "moving") {
+      fill("green");
     } else {
       // Normal platform color
       fill(150, 75, 0);
@@ -46,11 +47,14 @@ class Platform {
 function platformsPositionGen() {
   const newPlatforms = []; // An empty list to store newly generated platforms
   const yPositions = [100, 200, 400, 500, 600]; // Predefined y-positions for platforms (SHOULD BE REMADED LATER FOR RANDOMNESS)
-  for (const y of yPositions) { 
+  for (const y of yPositions) {
     // Takes each y position from the list
     const x = randomFromRange(50, 400); // Creates x for this platform and randomizes the x position within the canvas width
 
-    const type = Math.random() < breakingPlatfrormChance ? "breaking" : "normal"; // If the random number(0-10) is less than the chance(breakingPlatformChance), set type to breaking, else normal
+    let type = Math.random() < breakingPlatfrormChance ? "breaking" : "normal"; // If the random number(0-10) is less than the chance(breakingPlatformChance), set type to breaking, else normal
+    if (type != "breaking") {
+      type = Math.random() < movingPlatformChance ? "moving" : "normal";
+    }
 
     newPlatforms.push(new Platform(x, y, type)); // Create a new platform with generated x, predefined y, and type; then add it to the newPlatforms list
   }
@@ -65,9 +69,13 @@ function platformsDraw(platforms) {
 
     if (p.type === "breaking" && p.touched == true) { // If the platform is of breaking type and has been touched
       p.draw(true); // Draw the platform with transparency
-
     } else {
       p.draw(); // Else draw normally
+    }
+
+    if (p.type === "moving") {
+      // If the platform is of moving type
+      p.x += Math.sin((frameCount + p.randomValue) * 0.03) * 2; // Move the platform left and right using a sine wave for smooth movement
     }
   }
 }
@@ -89,7 +97,12 @@ function platformScroll(platforms, yPos) {
       if (p.y >= height) {
         p.y = 0; // Reset y position to the top
         p.x = randomFromRange(50, 400); // New random x position
-        p.type = Math.random() < breakingPlatfrormChance ? "breaking" : "normal"; // If the random number(0-10) is less than the chance(breakingPlatformChance), set type to breaking, else normal
+        p.type =
+          Math.random() < breakingPlatfrormChance ? "breaking" : "normal"; // If the random number(0-10) is less than the chance(breakingPlatformChance), set type to breaking, else normal
+        if (p.type != "breaking") {
+          p.type =
+            Math.random() < movingPlatformChance ? "moving" : "normal";
+        }
         p.touched = false; // Reset touched status for breaking platforms
       }
     }
