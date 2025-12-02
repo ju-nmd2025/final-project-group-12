@@ -1,52 +1,96 @@
-let isCameraScrolled = false;
+const breakingPlatfrormChance = 0.1; // A probability of platform being spawned as the breaking type
 
+let isCameraScrolled = false; // A toggle to check if the camera has scrolled, so we know when to apply ground collision logic
+
+// Function to update the yPos variable from game.js
 function setYPos(newYPos) {
-  yPos = newYPos;
+  yPos = newYPos; // Update the yPos variable
 }
 
-let platforms = []; // An empty list to start
+let platforms = []; // An empty list of platfroms that will be populated in game.js later
 
+// Platform class
 class Platform {
-  constructor(x, y) {
+  constructor(x, y, type = "normal") {
+    // If no type is provided, it will be "normal"
     this.x = x;
     this.y = y;
-    this.width = 100;
-    this.height = 20;
+    this.width = 70; // Platform width
+    this.height = 15; // Platform height
+    this.type = type;
+    this.touched = false; // To track if a breaking platform has been touched
   }
-  draw() {
-    fill(150, 75, 0);
-    rect(this.x, this.y, this.width, this.height);
+  // Draw method (alpha parameter for breaking platform fade effect)
+  draw(alpha = false) { 
+    if (this.type === "breaking") {
+      
+      if (alpha == true) {
+        // If alpha is true, apply transparency (used for breaking types when they are touched)
+        let c = color(200, 50, 50, 50);
+        fill(c);
+
+      } else {
+        // If breaking platfrom is not touched, draw normally
+        fill(200, 50, 50);
+      }
+
+    } else {
+      // Normal platform color
+      fill(150, 75, 0);
+    }
+    rect(this.x, this.y, this.width, this.height); // Draw the platform
   }
 }
 
+// Function to generate initial platform positions
 function platformsPositionGen() {
-  return [
-    new Platform(randomFromRange(50, 400), 400),
-    new Platform(randomFromRange(50, 400), 200),
-    new Platform(randomFromRange(50, 400), 600),
-    new Platform(randomFromRange(50, 400), 500),
-    new Platform(randomFromRange(50, 400), 100),
-  ];
+  const newPlatforms = []; // An empty list to store newly generated platforms
+  const yPositions = [100, 200, 400, 500, 600]; // Predefined y-positions for platforms (SHOULD BE REMADED LATER FOR RANDOMNESS)
+  for (const y of yPositions) { 
+    // Takes each y position from the list
+    const x = randomFromRange(50, 400); // Creates x for this platform and randomizes the x position within the canvas width
+
+    const type = Math.random() < breakingPlatfrormChance ? "breaking" : "normal"; // If the random number(0-10) is less than the chance(breakingPlatformChance), set type to breaking, else normal
+
+    newPlatforms.push(new Platform(x, y, type)); // Create a new platform with generated x, predefined y, and type; then add it to the newPlatforms list
+  }
+  return newPlatforms; // Return the list of newly generated platforms
 }
 
+// Function to draw platforms
 function platformsDraw(platforms) {
-  for (let p of platforms) {
-    p.draw();
+  for (let i = platforms.length - 1; i >= 0; i--) { // Iterate through the platforms list backwards (from last platfromn on the list to the first)
+
+    const p = platforms[i]; // Create a variable p that references the current platform in the loop
+
+    if (p.type === "breaking" && p.touched == true) { // If the platform is of breaking type and has been touched
+      p.draw(true); // Draw the platform with transparency
+
+    } else {
+      p.draw(); // Else draw normally
+    }
   }
 }
 
+// Function to handle platform scrolling
 function platformScroll(platforms, yPos) {
-  let shift = 0;
-  if (yPos < 200) {
-    isCameraScrolled = true;
-    shift = 200 - yPos;
-    yPos = 200;
+  let shift = 0; // create a shift variable to track how much the platforms need to move down
 
+  if (yPos < 200) {
+    isCameraScrolled = true; // Means the camera has scrolled and now the end screen logic can be applied in character.js
+    shift = 200 - yPos; // Calculate the shift amount based on how far the character is above the 200 yPos threshold
+    yPos = 200; // Locks the character's yPos to 200 to create the scrolling effect
+
+    // Move all platforms down by the shift amount
     for (let p of platforms) {
-      p.y += shift;
+      p.y += shift; // Move platform down
+
+      // If a platform moves below the canvas, reset it to the top with a new random x position and type
       if (p.y >= height) {
-        p.y = 0;
-        p.x = randomFromRange(50, 400);
+        p.y = 0; // Reset y position to the top
+        p.x = randomFromRange(50, 400); // New random x position
+        p.type = Math.random() < breakingPlatfrormChance ? "breaking" : "normal"; // If the random number(0-10) is less than the chance(breakingPlatformChance), set type to breaking, else normal
+        p.touched = false; // Reset touched status for breaking platforms
       }
     }
   }
