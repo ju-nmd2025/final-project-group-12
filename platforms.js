@@ -46,16 +46,18 @@ class Platform {
 // Function to generate initial platform positions
 function platformsPositionGen() {
   const newPlatforms = []; // An empty list to store newly generated platforms
-  const yPositions = [100, 200, 400, 500, 600]; // Predefined y-positions for platforms (SHOULD BE REMADED LATER FOR RANDOMNESS)
-  for (const y of yPositions) {
-    // Takes each y position from the list
+  let lastY = 0;
+
+  // Keep adding platforms until the screen is full vertically
+  while (lastY < height - 100) {
+    const y = lastY + randomFromRange(40, 100); // Add a new y position with a random gap
     const x = randomFromRange(50, 400); // Creates x for this platform and randomizes the x position within the canvas width
+    lastY = y; // Update the lastY to the current platform's y
 
     let type = Math.random() < breakingPlatfrormChance ? "breaking" : "normal"; // If the random number(0-10) is less than the chance(breakingPlatformChance), set type to breaking, else normal
     if (type != "breaking") {
       type = Math.random() < movingPlatformChance ? "moving" : "normal";
     }
-
     newPlatforms.push(new Platform(x, y, type)); // Create a new platform with generated x, predefined y, and type; then add it to the newPlatforms list
   }
   return newPlatforms; // Return the list of newly generated platforms
@@ -63,11 +65,14 @@ function platformsPositionGen() {
 
 // Function to draw platforms
 function platformsDraw(platforms) {
-  for (let i = platforms.length - 1; i >= 0; i--) { // Iterate through the platforms list backwards (from last platfromn on the list to the first)
+  // Iterate through the platforms list backwards (from last platfromn on the list to the first)
+  for (let i = platforms.length - 1; i >= 0; i--) {
 
     const p = platforms[i]; // Create a variable p that references the current platform in the loop
 
-    if (p.type === "breaking" && p.touched == true) { // If the platform is of breaking type and has been touched
+    // If the platform is of breaking type and has been touched
+    if (p.type === "breaking" && p.touched == true) {
+      
       p.draw(true); // Draw the platform with transparency
     } else {
       p.draw(); // Else draw normally
@@ -95,13 +100,20 @@ function platformScroll(platforms, yPos) {
 
       // If a platform moves below the canvas, reset it to the top with a new random x position and type
       if (p.y >= height) {
-        p.y = 0; // Reset y position to the top
+        // Find the y position of the highest platform on the screen
+        let highestPlatformY = Infinity;
+        for (let otherP of platforms) {
+          if (otherP.y < highestPlatformY) {
+            highestPlatformY = otherP.y;
+          }
+        }
+        // Position the recycled platform above the highest one
+        p.y = highestPlatformY - randomFromRange(40, 100);
         p.x = randomFromRange(50, 400); // New random x position
         p.type =
           Math.random() < breakingPlatfrormChance ? "breaking" : "normal"; // If the random number(0-10) is less than the chance(breakingPlatformChance), set type to breaking, else normal
         if (p.type != "breaking") {
-          p.type =
-            Math.random() < movingPlatformChance ? "moving" : "normal";
+          p.type = Math.random() < movingPlatformChance ? "moving" : "normal";
         }
         p.touched = false; // Reset touched status for breaking platforms
       }
