@@ -11,6 +11,27 @@ let xFriction = 0.9; // Friction to slow down horizontal movement after key rele
 let gravityAcceleration = 0.9; // Gravity effect
 let startScreenVisible = true; // Stop player movement and show start screen
 
+class GameState {
+  states = {
+    //GAMEPLAY STATES
+    game: "game",
+    //UI STATES
+    startScreen: "startScreen",
+    endScreen: "endScreen",
+  };
+
+  constructor() {
+    // Default State
+    this.currentState = this.states.startScreen;
+  }
+
+  changeState(newState) {
+    this.currentState = newState;
+  }
+}
+
+let gameState = new GameState();
+
 function characterShape(x, y, diameter) {
   fill(100, 150, 255);
   circle(x, y, diameter);
@@ -28,7 +49,6 @@ class button {
     this.yCalculateNegative = yPos - ySize / 2;
     this.color = color;
     this.text = text;
-    this.visible = false;
   }
 
   draw() {
@@ -52,8 +72,6 @@ class button {
     textAlign(CENTER, CENTER);
     text(this.text, this.xPos, this.yPos);
     pop();
-    // Tell the button that it is visible
-    this.visible = true;
   }
 }
 
@@ -62,7 +80,8 @@ const startButton = new button(250, 350, 250, 100, "blue", "Start");
 const retryButton = new button(250, 350, 200, 50, "green", "Retry");
 
 function restart() {
-  startScreenVisible = false;
+  gameState.changeState(gameState.states.game);
+  console.log(gameState.currentState);
   startButton.visible = false;
   retryButton.visible = false;
   isCameraScrolled = false;
@@ -75,13 +94,14 @@ function restart() {
 }
 
 function mouseClicked() {
+  console.log(gameState.currentState);
   //Retry button
   if (
     mouseX >= retryButton.xCalculateNegative &&
     mouseX <= retryButton.xCalculatePosetive &&
     mouseY >= retryButton.yCalculateNegative &&
     mouseY <= retryButton.yCalculatePosetive &&
-    retryButton.visible === true
+    gameState.currentState === gameState.states.endScreen
   ) {
     restart();
   } else if (
@@ -89,14 +109,14 @@ function mouseClicked() {
     mouseX <= startButton.xCalculatePosetive &&
     mouseY >= startButton.yCalculateNegative &&
     mouseY <= startButton.yCalculatePosetive &&
-    startButton.visible === true
+    gameState.currentState === gameState.states.startScreen
   ) {
     restart();
   }
 }
 
 function showStartScreen() {
-  if (startScreenVisible === true) {
+  if (gameState.currentState === gameState.states.startScreen) {
     push();
     fill("white");
     quad(0, 0, 500, 0, 500, 700, 0, 700);
@@ -116,6 +136,7 @@ function showEndScreen() {
   // If the player have made the camera scroll the player can trigger a game over
   if (yPos + characterDiameter / 2 > height && isCameraScrolled === true) {
     if (debugMode == false) {
+      gameState.changeState(gameState.states.endScreen)
       push();
       fill("black");
       quad(0, 0, 500, 0, 500, 700, 0, 700);
@@ -165,7 +186,7 @@ function characterCollision(platforms) {
 
 function characterMovement() {
   // Dont move the player when start screen is visible
-  if (startScreenVisible === true) {
+  if (gameState.currentState === gameState.states.startScreen) {
     xPos = 100;
     yPos = 200;
   } else {
