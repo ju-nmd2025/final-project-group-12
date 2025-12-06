@@ -1,5 +1,5 @@
 import { isCameraScrolled, platforms, platformsPositionGen, } from "./platforms.js";
-import { debugMode } from "./utils.js";
+import { debugMode, gameState } from "./utils.js";
 
 let xPos = 100; // Initial horizontal position
 let yPos = 400; // Initial vertical position
@@ -10,25 +10,6 @@ let xAcceleration = 1.2; // How fast the character speeds up horizontally
 let xFriction = 0.9; // Friction to slow down horizontal movement after key release
 let gravityAcceleration = 0.9; // Gravity effect
 let startScreenVisible = true; // Stop player movement and show start screen
-
-class GameState {
-  states = {
-    //GAMEPLAY STATES
-    game: "game",
-    //UI STATES
-    startScreen: "startScreen",
-    endScreen: "endScreen",
-  };
-
-  constructor() {
-    // Default State
-    this.currentState = this.states.startScreen;
-  }
-
-  changeState(newState) {
-    this.currentState = newState;
-  }
-}
 
 let gameState = new GameState();
 

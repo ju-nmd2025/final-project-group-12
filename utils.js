@@ -1,3 +1,22 @@
+// Class that keep track of gamestates
+export class GameState {
+  states = {
+    //GAMEPLAY STATES
+    game: "game",
+    //UI STATES
+    startScreen: "startScreen",
+    endScreen: "endScreen",
+  };
+
+  constructor() {
+    // Default State
+    this.currentState = this.states.startScreen;
+  }
+
+  changeState(newState) {
+    this.currentState = newState;
+  }
+}
 // Toggles the debug information and end screen display (so you don't die when you fall, but bounce off instead)
 let debugMode = true;
 
