@@ -9,7 +9,6 @@ let characterDiameter = 50;
 let xAcceleration = 1.2; // How fast the character speeds up horizontally
 let xFriction = 0.9; // Friction to slow down horizontal movement after key release
 let gravityAcceleration = 0.9; // Gravity effect
-let startScreenVisible = true; // Stop player movement and show start screen
 
 let gameState = new GameState();
 
@@ -166,14 +165,9 @@ function characterCollision(platforms) {
 }
 
 function characterMovement() {
-  // Dont move the player when start screen is visible
-  if (gameState.currentState === gameState.states.startScreen) {
-    xPos = 100;
-    yPos = 200;
-  } else {
     ySpeed += gravityAcceleration; // Apply gravity
     yPos += ySpeed; // Update vertical position
-  }
+
 
   // --- Ground Collision Logic ---
 
