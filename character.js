@@ -61,7 +61,6 @@ const retryButton = new button(250, 350, 200, 50, "green", "Retry");
 
 function restart() {
   gameState.changeState(gameState.states.game);
-  console.log(gameState.currentState);
   startButton.visible = false;
   retryButton.visible = false;
   isCameraScrolled = false;
@@ -74,7 +73,6 @@ function restart() {
 }
 
 function mouseClicked() {
-  console.log(gameState.currentState);
   //Retry button
   if (
     mouseX >= retryButton.xCalculateNegative &&
