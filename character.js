@@ -114,9 +114,9 @@ function showEndScreen() {
   // If the player have made the camera scroll the player can trigger a game over
   if (yPos + characterDiameter / 2 > height && isCameraScrolled === true) {
     if (debugMode == false) {
-      gameState.changeState(gameState.states.endScreen)
+      gameState.changeState(gameState.states.endScreen);
       push();
-      fill("black");
+      fill(0, 0, 0, 150);
       quad(0, 0, 500, 0, 500, 700, 0, 700);
       pop();
       push();
@@ -163,9 +163,8 @@ function characterCollision(platforms) {
 }
 
 function characterMovement() {
-    ySpeed += gravityAcceleration; // Apply gravity
-    yPos += ySpeed; // Update vertical position
-
+  ySpeed += gravityAcceleration; // Apply gravity
+  yPos += ySpeed; // Update vertical position
 
   // --- Ground Collision Logic ---
 
