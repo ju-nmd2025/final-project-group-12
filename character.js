@@ -61,8 +61,6 @@ const retryButton = new button(250, 350, 200, 50, "green", "Retry");
 
 function restart() {
   gameState.changeState(gameState.states.game);
-  startButton.visible = false;
-  retryButton.visible = false;
   isCameraScrolled = false;
   xPos = 100;
   yPos = 400;
