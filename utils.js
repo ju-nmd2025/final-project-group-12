@@ -38,7 +38,7 @@ function debugInfo(ySpeed, xSpeed, xPos, yPos, shift) {
   pop();
 }
 
-class button {
+class Button {
   constructor(xPos, yPos, xSize, ySize, color, text) {
     this.xPos = xPos;
     this.yPos = yPos;
