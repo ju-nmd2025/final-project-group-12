@@ -1,4 +1,4 @@
-import { isCameraScrolled, platforms, platformsPositionGen, } from "./platforms.js";
+import { isCameraScrolled, platforms, platformsPositionGen, score, } from "./platforms.js";
 import { debugMode, GameState, Button, } from "./utils.js";
 
 let xPos = 100; // Initial horizontal position
@@ -25,6 +25,7 @@ const retryButton = new Button(250, 350, 200, 50, "green", "Retry");
 function restart() {
   gameState.changeState(gameState.states.game);
   isCameraScrolled = false;
+  score = 0;
   xPos = 100;
   yPos = 400;
   ySpeed = 1;
