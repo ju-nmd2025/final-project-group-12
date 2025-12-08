@@ -18,7 +18,7 @@ export class GameState {
   }
 }
 // Toggles the debug information and end screen display (so you don't die when you fall, but bounce off instead)
-let debugMode = true;
+let debugMode = false;
 
 // Function to generate a random number within a specified range
 function randomFromRange(min, max) {

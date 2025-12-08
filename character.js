@@ -1,5 +1,5 @@
 import { isCameraScrolled, platforms, platformsPositionGen, } from "./platforms.js";
-import { debugMode, gameState } from "./utils.js";
+import { debugMode, GameState, } from "./utils.js";
 
 let xPos = 100; // Initial horizontal position
 let yPos = 400; // Initial vertical position
