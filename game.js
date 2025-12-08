@@ -1,5 +1,5 @@
 import { debugInfo, debugMode }  from "./utils.js";
-import { setYPos, platforms, platformsPositionGen, platformsDraw, platformScroll } from "./platforms.js";
+import { setYPos, platforms, platformsPositionGen, platformsDraw, platformScroll, score, minY, maxY} from "./platforms.js";
 import { characterShape, characterCollision, characterMovement, characterDiameter, showStartScreen, showEndScreen, yPos, xPos, ySpeed, xSpeed } from "./character.js";
 
 function setup() {
@@ -32,7 +32,15 @@ function draw() {
   if (debugMode == true){ // Show debug info if debugMode is true
     debugInfo(ySpeed, xSpeed, xPos, yPos, scrollResult.shift);
   }
-
+  push();
+  fill(0);
+  strokeWeight(0);
+  textSize(20);
+  textAlign(RIGHT, TOP);
+  text("Score: ", 495, 20); // Display score
+  text(score, 490, 40);
+  console.log(Math.floor(minY) + " " + Math.floor(maxY));
+  pop();
   showStartScreen(); // Draw the start screen
   showEndScreen(); // Draw the end screen
 }
