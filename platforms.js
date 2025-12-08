@@ -1,7 +1,11 @@
 const breakingPlatfrormChance = 0.1; // A probability of platform being spawned as the breaking type
 const movingPlatformChance = 0.1; // A probability of platform being spawned as the moving type
 
+let score = 0;
 let isCameraScrolled = false; // A toggle to check if the camera has scrolled, so we know when to apply ground collision logic
+
+let minY = 40;
+let maxY = 100;
 
 // Function to update the yPos variable from game.js
 function setYPos(newYPos) {
@@ -88,16 +92,18 @@ function platformsDraw(platforms) {
 // Function to handle platform scrolling
 function platformScroll(platforms, yPos) {
   let shift = 0; // create a shift variable to track how much the platforms need to move down
-
   if (yPos < 200) {
     isCameraScrolled = true; // Means the camera has scrolled and now the end screen logic can be applied in character.js
     shift = 200 - yPos; // Calculate the shift amount based on how far the character is above the 200 yPos threshold
-    yPos = 200; // Locks the character's yPos to 200 to create the scrolling effect
+    yPos = 200;
+    score += Math.floor(shift / 10); // Locks the character's yPos to 200 to create the scrolling effect
 
     // Move all platforms down by the shift amount
     for (let p of platforms) {
       p.y += shift; // Move platform down
-
+      if (p.width >= 30) {
+        p.width -= score / 100000; // Gradually decrease platform width as score increases
+      }
       // If a platform moves below the canvas, reset it to the top with a new random x position and type
       if (p.y >= height) {
         // Find the y position of the highest platform on the screen
@@ -108,7 +114,15 @@ function platformScroll(platforms, yPos) {
           }
         }
         // Position the recycled platform above the highest one
-        p.y = highestPlatformY - randomFromRange(40, 100);
+        if (minY <= 300){
+          minY += score / 2000;
+        }
+        if (maxY <= 300){
+          maxY += score / 3000;
+        }
+        if (minY >= 300 && maxY >= 300){}
+
+        p.y = highestPlatformY - randomFromRange(minY, maxY);
         p.x = randomFromRange(50, 400); // New random x position
         p.type =
           Math.random() < breakingPlatfrormChance ? "breaking" : "normal"; // If the random number(0-10) is less than the chance(breakingPlatformChance), set type to breaking, else normal

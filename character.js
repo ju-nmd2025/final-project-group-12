@@ -126,7 +126,7 @@ function showEndScreen() {
       pop();
       retryButton.draw();
     } else {
-      ySpeed = -25;
+      ySpeed = -35;
       yPos = height - characterDiameter / 2;
     }
   }
@@ -145,7 +145,7 @@ function characterCollision(platforms) {
     let ballBottom = yPos + characterDiameter / 2;
 
     if (ySpeed > 0) {
-      if (xPos > p.x && xPos < p.x + 100) {
+      if (xPos + 10 > p.x && xPos - 10 < p.x + p.width) {
         if (ballBottom >= p.y && ballBottom <= p.y + 25) {
           if (p.touched == false) {
             if (p.type === "breaking") {
