@@ -1,5 +1,5 @@
-import { isCameraScrolled, platforms, platformsPositionGen } from "./platforms.js";
-import { debugMode, button } from "./utils.js";
+import { isCameraScrolled, platforms, platformsPositionGen, } from "./platforms.js";
+import { debugMode, GameState, button, } from "./utils.js";
 
 let xPos = 100; // Initial horizontal position
 let yPos = 400; // Initial vertical position
@@ -9,7 +9,8 @@ let characterDiameter = 50;
 let xAcceleration = 1.2; // How fast the character speeds up horizontally
 let xFriction = 0.9; // Friction to slow down horizontal movement after key release
 let gravityAcceleration = 0.9; // Gravity effect
-let startScreenVisible = true; // Stop player movement and show start screen
+
+let gameState = new GameState();
 
 function characterShape(x, y, diameter) {
   fill(100, 150, 255);
@@ -62,9 +63,7 @@ const startButton = new button(250, 350, 250, 100, "blue", "Start");
 const retryButton = new button(250, 350, 200, 50, "green", "Retry");
 
 function restart() {
-  startScreenVisible = false;
-  startButton.visible = false;
-  retryButton.visible = false;
+  gameState.changeState(gameState.states.game);
   isCameraScrolled = false;
   xPos = 100;
   yPos = 400;
@@ -81,7 +80,7 @@ function mouseClicked() {
     mouseX <= retryButton.xCalculatePosetive &&
     mouseY >= retryButton.yCalculateNegative &&
     mouseY <= retryButton.yCalculatePosetive &&
-    retryButton.visible === true
+    gameState.currentState === gameState.states.endScreen
   ) {
     restart();
   } else if (
@@ -89,14 +88,14 @@ function mouseClicked() {
     mouseX <= startButton.xCalculatePosetive &&
     mouseY >= startButton.yCalculateNegative &&
     mouseY <= startButton.yCalculatePosetive &&
-    startButton.visible === true
+    gameState.currentState === gameState.states.startScreen
   ) {
     restart();
   }
 }
 
 function showStartScreen() {
-  if (startScreenVisible === true) {
+  if (gameState.currentState === gameState.states.startScreen) {
     push();
     fill("white");
     quad(0, 0, 500, 0, 500, 700, 0, 700);
@@ -116,8 +115,9 @@ function showEndScreen() {
   // If the player have made the camera scroll the player can trigger a game over
   if (yPos + characterDiameter / 2 > height && isCameraScrolled === true) {
     if (debugMode == false) {
+      gameState.changeState(gameState.states.endScreen);
       push();
-      fill("black");
+      fill(0, 0, 0, 150);
       quad(0, 0, 500, 0, 500, 700, 0, 700);
       pop();
       push();
@@ -164,14 +164,8 @@ function characterCollision(platforms) {
 }
 
 function characterMovement() {
-  // Dont move the player when start screen is visible
-  if (startScreenVisible === true) {
-    xPos = 100;
-    yPos = 200;
-  } else {
-    ySpeed += gravityAcceleration; // Apply gravity
-    yPos += ySpeed; // Update vertical position
-  }
+  ySpeed += gravityAcceleration; // Apply gravity
+  yPos += ySpeed; // Update vertical position
 
   // --- Ground Collision Logic ---
 
