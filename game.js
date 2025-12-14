@@ -24,12 +24,13 @@ function draw() {
   // Handle platform scrolling
   const scrollResult = platformScroll(platforms, yPos); // Creates a variable scrollResult that returns newYPos and shift (see the funnction in platforms.js)
   setYPos(scrollResult.newYPos); // Extracts the newYPos variable from the platformScroll function and sends it to the platfroms.js through the setYPos to update the yPos value there
-  
+
   characterCollision(platforms); // Check for collision
 
   characterShape(xPos, yPos, characterDiameter); //Draw the character
 
-  if (debugMode == true){ // Show debug info if debugMode is true
+  if (debugMode == true) {
+    // Show debug info if debugMode is true
     debugInfo(ySpeed, xSpeed, xPos, yPos, scrollResult.shift);
   }
   push();
@@ -39,7 +40,6 @@ function draw() {
   textAlign(RIGHT, TOP);
   text("Score: ", 495, 20); // Display score
   text(score, 490, 40);
-  console.log(Math.floor(minY) + " " + Math.floor(maxY));
   pop();
   showStartScreen(); // Draw the start screen
   showEndScreen(); // Draw the end screen
