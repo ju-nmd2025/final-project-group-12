@@ -1,18 +1,40 @@
-const breakingPlatfrormChance = 0.1; // A probability of platform being spawned as the breaking type
-const movingPlatformChance = 0.1; // A probability of platform being spawned as the moving type
+import { randomFromRange } from "./utils.js";
+import { setYPos as updateYPos } from "./character.js";
 
-let score = 0;
-let isCameraScrolled = false; // A toggle to check if the camera has scrolled, so we know when to apply ground collision logic
+export const breakingPlatfrormChance = 0.1; // A probability of platform being spawned as the moving type
+export const movingPlatformChance = 0.1; // A probability of platform being spawned as the moving type
 
-let minY = 40;
-let maxY = 100;
+export let score = 0;
+export let isCameraScrolled = false; // A toggle to check if the camera has scrolled, so we know when to apply ground collision logic
 
-// Function to update the yPos variable from game.js
-function setYPos(newYPos) {
-  yPos = newYPos; // Update the yPos variable
+export let minY = 40;
+export let maxY = 100;
+
+// Setter function for isCameraScrolled to allow external modules to update it
+export function setIsCameraScrolled(value) {
+  isCameraScrolled = value;
 }
 
-let platforms = []; // An empty list of platfroms that will be populated in game.js later
+// Setter function for score to allow external modules to update it
+export function setScore(value) {
+  score = value;
+}
+
+// Setter functions for minY and maxY to allow external modules to update them
+export function setMinY(value) {
+  minY = value;
+}
+
+export function setMaxY(value) {
+  maxY = value;
+}
+
+// Re-export setYPos for use in game.js (wrapper that calls character.js setter)
+export function setYPos(newYPos) {
+  updateYPos(newYPos);
+}
+
+export let platforms = []; // An empty list of platfroms that will be populated in game.js later
 
 // Platform class
 class Platform {
@@ -48,9 +70,9 @@ class Platform {
 }
 
 // Function to generate initial platform positions
-function platformsPositionGen() {
+export function platformsPositionGen() {
   const newPlatforms = []; // An empty list to store newly generated platforms
-  let lastY = 0;
+  let lastY = -200;
 
   // Keep adding platforms until the screen is full vertically
   while (lastY < height - 100) {
@@ -68,15 +90,13 @@ function platformsPositionGen() {
 }
 
 // Function to draw platforms
-function platformsDraw(platforms) {
+export function platformsDraw(platforms) {
   // Iterate through the platforms list backwards (from last platfromn on the list to the first)
   for (let i = platforms.length - 1; i >= 0; i--) {
-
     const p = platforms[i]; // Create a variable p that references the current platform in the loop
 
     // If the platform is of breaking type and has been touched
     if (p.type === "breaking" && p.touched == true) {
-      
       p.draw(true); // Draw the platform with transparency
     } else {
       p.draw(); // Else draw normally
@@ -90,7 +110,7 @@ function platformsDraw(platforms) {
 }
 
 // Function to handle platform scrolling
-function platformScroll(platforms, yPos) {
+export function platformScroll(platforms, yPos) {
   let shift = 0; // create a shift variable to track how much the platforms need to move down
   if (yPos < 200) {
     isCameraScrolled = true; // Means the camera has scrolled and now the end screen logic can be applied in character.js
@@ -102,7 +122,7 @@ function platformScroll(platforms, yPos) {
     for (let p of platforms) {
       p.y += shift; // Move platform down
       if (p.width >= 30) {
-        p.width -= score / 100000; // Gradually decrease platform width as score increases
+        p.width -= score / 1000000; // Gradually decrease platform width as score increases
       }
       // If a platform moves below the canvas, reset it to the top with a new random x position and type
       if (p.y >= height) {
@@ -113,16 +133,22 @@ function platformScroll(platforms, yPos) {
             highestPlatformY = otherP.y;
           }
         }
-        // Position the recycled platform above the highest one
-        if (minY <= 300){
+        // Position the recycled platform above the highest one, but ensure it's out of bounds
+        // Calculate desired position based on spacing
+        if (minY <= 300) {
           minY += score / 2000;
         }
-        if (maxY <= 300){
+        if (maxY <= 300) {
           maxY += score / 3000;
         }
-        if (minY >= 300 && maxY >= 300){}
+        if (minY >= 300 && maxY >= 300) {
+        }
 
-        p.y = highestPlatformY - randomFromRange(minY, maxY);
+        let desiredY = highestPlatformY - randomFromRange(minY, maxY);
+        // Ensure the platform is positioned well above the screen (out of bounds)
+        // Position it at least 150 pixels above the top of the screen to guarantee it's not visible
+        // This way it will smoothly scroll into view as the game progresses
+        p.y = Math.min(desiredY, -150);
         p.x = randomFromRange(50, 400); // New random x position
         p.type =
           Math.random() < breakingPlatfrormChance ? "breaking" : "normal"; // If the random number(0-10) is less than the chance(breakingPlatformChance), set type to breaking, else normal

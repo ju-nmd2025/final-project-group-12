@@ -1,6 +1,30 @@
-import { debugInfo, debugMode }  from "./utils.js";
-import { setYPos, platforms, platformsPositionGen, platformsDraw, platformScroll, score, minY, maxY} from "./platforms.js";
-import { characterShape, characterCollision, characterMovement, characterDiameter, showStartScreen, showEndScreen, yPos, xPos, ySpeed, xSpeed } from "./character.js";
+import { 
+  debugInfo, 
+  debugMode,
+} from "./utils.js";
+
+import {
+  setYPos,
+  platforms,
+  platformsPositionGen,
+  platformsDraw,
+  platformScroll,
+  score,
+} from "./platforms.js";
+
+import {
+  characterShape,
+  characterCollision,
+  characterMovement,
+  characterDiameter,
+  showStartScreen,
+  showEndScreen,
+  yPos,
+  xPos,
+  ySpeed,
+  xSpeed,
+  mouseClicked,
+} from "./character.js";
 
 function setup() {
   // Set up the canvas
@@ -8,7 +32,7 @@ function setup() {
   background(240, 255, 240);
   stroke(0);
   strokeWeight(2);
-  frameRate(120);
+  frameRate(60);
 
   // Initialize platforms
   platforms.push(...platformsPositionGen());
@@ -24,12 +48,13 @@ function draw() {
   // Handle platform scrolling
   const scrollResult = platformScroll(platforms, yPos); // Creates a variable scrollResult that returns newYPos and shift (see the funnction in platforms.js)
   setYPos(scrollResult.newYPos); // Extracts the newYPos variable from the platformScroll function and sends it to the platfroms.js through the setYPos to update the yPos value there
-  
+
   characterCollision(platforms); // Check for collision
 
   characterShape(xPos, yPos, characterDiameter); //Draw the character
 
-  if (debugMode == true){ // Show debug info if debugMode is true
+  if (debugMode == true) {
+    // Show debug info if debugMode is true
     debugInfo(ySpeed, xSpeed, xPos, yPos, scrollResult.shift);
   }
   push();
@@ -39,8 +64,13 @@ function draw() {
   textAlign(RIGHT, TOP);
   text("Score: ", 495, 20); // Display score
   text(score, 490, 40);
-  console.log(Math.floor(minY) + " " + Math.floor(maxY));
   pop();
+
   showStartScreen(); // Draw the start screen
   showEndScreen(); // Draw the end screen
 }
+
+// Make setup(), draw(), and mouseClicked() globally available so p5.js can find them
+window.setup = setup;
+window.draw = draw;
+window.mouseClicked = mouseClicked;
