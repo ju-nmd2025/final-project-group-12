@@ -18,15 +18,15 @@ export class GameState {
   }
 }
 // Toggles the debug information and end screen display (so you don't die when you fall, but bounce off instead)
-let debugMode = false;
+export let debugMode = true;
 
 // Function to generate a random number within a specified range
-function randomFromRange(min, max) {
+export function randomFromRange(min, max) {
   return Math.random() * (max - min) + min;
 }
 
 // Function to display debug information on the screen
-function debugInfo(ySpeed, xSpeed, xPos, yPos, shift) {
+export function debugInfo(ySpeed, xSpeed, xPos, yPos, shift) {
   push();
   strokeWeight(0);
   fill(0);
@@ -38,7 +38,7 @@ function debugInfo(ySpeed, xSpeed, xPos, yPos, shift) {
   pop();
 }
 
-class button {
+export class button {
   constructor(xPos, yPos, xSize, ySize, color, text) {
     this.xPos = xPos;
     this.yPos = yPos;
