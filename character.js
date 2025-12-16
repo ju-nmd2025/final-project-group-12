@@ -4,6 +4,7 @@ import {
   platformsPositionGen,
   setIsCameraScrolled,
   setScore,
+  score,
   setMinY,
   setMaxY,
 } from "./platforms.js";
@@ -105,6 +106,13 @@ export function showEndScreen() {
       textSize(50);
       textAlign(CENTER);
       text("YOU ARE DEAD!", 500 / 2, 100);
+      pop();
+      push();
+      fill("white");
+      textStyle(BOLD);
+      textSize(25);
+      textAlign(CENTER);
+      text(`Your score is ${score}!`, 500 / 2, 200);
       pop();
       retryButton.draw();
     } else {
