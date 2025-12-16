@@ -49,7 +49,6 @@ export class button {
     this.yCalculateNegative = yPos - ySize / 2;
     this.color = color;
     this.text = text;
-    this.visible = false;
   }
 
   draw() {
@@ -73,7 +72,5 @@ export class button {
     textAlign(CENTER, CENTER);
     text(this.text, this.xPos, this.yPos);
     pop();
-    // Tell the button that it is visible
-    this.visible = true;
   }
 }
