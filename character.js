@@ -18,6 +18,7 @@ export let characterDiameter = 50;
 export let xAcceleration = 1.2; // How fast the character speeds up horizontally
 export let xFriction = 0.9; // Friction to slow down horizontal movement after key release
 export let gravityAcceleration = 0.9; // Gravity effect
+export let highScore = 0; // Current high score
 
 export let gameState = new GameState();
 
@@ -96,6 +97,11 @@ export function showEndScreen() {
   if (yPos + characterDiameter / 2 > height && isCameraScrolled === true) {
     if (debugMode == false) {
       gameState.changeState(gameState.states.endScreen);
+      // High score functionality
+      if (score >= highScore) {
+        highScore = score;
+        console.log(highScore + " " + score);
+      }
       push();
       fill(0, 0, 0, 150);
       quad(0, 0, 500, 0, 500, 700, 0, 700);
