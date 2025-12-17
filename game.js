@@ -1,4 +1,4 @@
-import { debugInfo, debugMode } from "./utils.js";
+import { debugInfo, debugMode, changeHighScoreColor } from "./utils.js";
 
 import {
   setYPos,
@@ -64,7 +64,7 @@ function draw() {
   text(score, 490, 40);
   pop();
   push();
-  fill(0);
+  fill(changeHighScoreColor(score, highScore));
   strokeWeight(0);
   textSize(20);
   textAlign(CENTER, TOP);
