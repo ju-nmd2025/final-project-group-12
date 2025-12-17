@@ -1,7 +1,4 @@
-import { 
-  debugInfo, 
-  debugMode,
-} from "./utils.js";
+import { debugInfo, debugMode, changeHighScoreColor } from "./utils.js";
 
 import {
   setYPos,
@@ -26,6 +23,7 @@ import {
   mouseClicked,
   preloadCharacter,
   ballMovement,
+  highScore,
 } from "./character.js";
 
 let ball;
