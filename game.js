@@ -1,7 +1,4 @@
-import { 
-  debugInfo, 
-  debugMode,
-} from "./utils.js";
+import { debugInfo, debugMode, changeHighScoreColor } from "./utils.js";
 
 import {
   setYPos,
@@ -24,6 +21,7 @@ import {
   ySpeed,
   xSpeed,
   mouseClicked,
+  highScore,
 } from "./character.js";
 
 function setup() {
@@ -64,6 +62,14 @@ function draw() {
   textAlign(RIGHT, TOP);
   text("Score: ", 495, 20); // Display score
   text(score, 490, 40);
+  pop();
+  push();
+  fill(changeHighScoreColor(score, highScore));
+  strokeWeight(0);
+  textSize(20);
+  textAlign(CENTER, TOP);
+  text("HIGH SCORE: ", 75, 20); // Display high score
+  text(highScore, 75, 40);
   pop();
 
   showStartScreen(); // Draw the start screen

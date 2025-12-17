@@ -38,6 +38,19 @@ export function debugInfo(ySpeed, xSpeed, xPos, yPos, shift) {
   pop();
 }
 
+// Change color and visability of text during gameplay determined if the player has beaten thier previous score
+export function changeHighScoreColor(score, highScore) {
+  let color;
+  if (0 >= highScore) {
+    color = [0, 0, 0, 0];
+  } else if (score >= highScore) {
+    color = "green";
+  } else {
+    color = "black";
+  }
+  return color;
+}
+
 export class button {
   constructor(xPos, yPos, xSize, ySize, color, text) {
     this.xPos = xPos;
@@ -49,7 +62,6 @@ export class button {
     this.yCalculateNegative = yPos - ySize / 2;
     this.color = color;
     this.text = text;
-    this.visible = false;
   }
 
   draw() {
@@ -73,7 +85,5 @@ export class button {
     textAlign(CENTER, CENTER);
     text(this.text, this.xPos, this.yPos);
     pop();
-    // Tell the button that it is visible
-    this.visible = true;
   }
 }
