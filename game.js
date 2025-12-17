@@ -24,6 +24,7 @@ import {
   ySpeed,
   xSpeed,
   mouseClicked,
+  highScore,
 } from "./character.js";
 
 function setup() {
@@ -65,7 +66,15 @@ function draw() {
   text("Score: ", 495, 20); // Display score
   text(score, 490, 40);
   pop();
-
+  push();
+  fill(0);
+  strokeWeight(0);
+  textSize(20);
+  textAlign(RIGHT, TOP);
+  text("HIGH SCORE: ", 495, 60); // Display high score
+  text(highScore, 490, 80);
+  pop();
+  
   showStartScreen(); // Draw the start screen
   showEndScreen(); // Draw the end screen
 }
