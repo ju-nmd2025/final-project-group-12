@@ -36,6 +36,8 @@ export function setYPos(newYPos) {
 
 export let platforms = []; // An empty list of platfroms that will be populated in game.js later
 
+export let shift = 0; // create a shift variable to track how much the platforms need to move down
+
 // Platform class
 class Platform {
   constructor(x, y, type = "normal") {
@@ -111,7 +113,7 @@ export function platformsDraw(platforms) {
 
 // Function to handle platform scrolling
 export function platformScroll(platforms, yPos) {
-  let shift = 0; // create a shift variable to track how much the platforms need to move down
+  shift = 0; // Reset shift at the start of the function
   if (yPos < 200) {
     isCameraScrolled = true; // Means the camera has scrolled and now the end screen logic can be applied in character.js
     shift = 200 - yPos; // Calculate the shift amount based on how far the character is above the 200 yPos threshold

@@ -1,4 +1,4 @@
-import { debugInfo, debugMode, changeHighScoreColor } from "./utils.js";
+import { debugInfo, debugMode, changeHighScoreColor, randomFromRange } from "./utils.js";
 
 import {
   setYPos,
@@ -7,6 +7,7 @@ import {
   platformsDraw,
   platformScroll,
   score,
+  shift,
 } from "./platforms.js";
 
 import {
@@ -26,10 +27,19 @@ import {
   highScore,
 } from "./character.js";
 
-let ball;
+let backgroundImg;
+let treesImg;
+let treeYPos = -700;
+let currentTreeIndex = 0;
+let treeScale = 1;
+
+let backgroundScroll = [0, -690];
+let treesScroll = 0;
 
 function preload() {
   preloadCharacter();
+  backgroundImg = loadImage("img/bg.png");
+  treesImg = [loadImage("img/trees/tree_1.png"), loadImage("img/trees/tree_2.png"), loadImage("img/trees/tree_3.png"), loadImage("img/trees/tree_4.png")];
 }
 
 function setup() {
@@ -44,8 +54,49 @@ function setup() {
   platforms.push(...platformsPositionGen());
 }
 
+
+function drawBackground() {
+  imageMode(CORNER);
+  backgroundScroll[0] += Math.round(shift/3);
+  backgroundScroll[1] += Math.round(shift/3);
+  push();
+  noStroke();
+  if (backgroundScroll[0] >= height) {
+    backgroundScroll[0] = backgroundScroll[1] - height;
+  }
+  if (backgroundScroll[1] >= height) {
+    backgroundScroll[1] = backgroundScroll[0] - height;
+  }
+  image(backgroundImg, 0, backgroundScroll[0], width, height);
+  image(backgroundImg, 0, backgroundScroll[1], width, height);
+  pop();
+
+
+}
+
+function TreesDraw() {
+  push();
+  imageMode(CORNER);
+  tint(255, 240);
+  drawingContext.filter = "blur(10px)";
+  treesScroll += shift*1.5;
+  treeYPos = treesScroll - 700;
+
+  translate(width / 2, treeYPos);
+  scale(treeScale, 1);
+  image(treesImg[currentTreeIndex], -350, 0, 700, 700); // Use currentTreeIndex to select a random tree
+  if (treeYPos >= height){  
+    treesScroll = 0;
+    treeYPos = -700;
+    treeScale = Math.random() > 0.5 ? 1 : -1;
+    currentTreeIndex = Math.floor(Math.random() * treesImg.length); // Randomly pick an index for the next tree
+  }  
+  pop();
+
+}
+
 function draw() {
-  background(240, 255, 240); // Clear the background each frame
+  drawBackground();
 
   characterMovement(); // Update character movement
 
@@ -58,6 +109,8 @@ function draw() {
   characterCollision(platforms); // Check for collision
 
   characterShape(xPos, yPos, characterDiameter); //Draw the character
+
+  TreesDraw();
 
   if (debugMode == true) {
     // Show debug info if debugMode is true
