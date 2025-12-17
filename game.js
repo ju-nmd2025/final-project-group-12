@@ -21,8 +21,16 @@ import {
   ySpeed,
   xSpeed,
   mouseClicked,
+  preloadCharacter,
+  ballMovement,
   highScore,
 } from "./character.js";
+
+let ball;
+
+function preload() {
+  preloadCharacter();
+}
 
 function setup() {
   // Set up the canvas
@@ -53,7 +61,7 @@ function draw() {
 
   if (debugMode == true) {
     // Show debug info if debugMode is true
-    debugInfo(ySpeed, xSpeed, xPos, yPos, scrollResult.shift);
+    debugInfo(ySpeed, xSpeed, xPos, yPos, scrollResult.shift, ballMovement);
   }
   push();
   fill(0);
@@ -63,20 +71,12 @@ function draw() {
   text("Score: ", 495, 20); // Display score
   text(score, 490, 40);
   pop();
-  push();
-  fill(changeHighScoreColor(score, highScore));
-  strokeWeight(0);
-  textSize(20);
-  textAlign(CENTER, TOP);
-  text("HIGH SCORE: ", 75, 20); // Display high score
-  text(highScore, 75, 40);
-  pop();
-
   showStartScreen(); // Draw the start screen
   showEndScreen(); // Draw the end screen
 }
 
 // Make setup(), draw(), and mouseClicked() globally available so p5.js can find them
+window.preload = preload;
 window.setup = setup;
 window.draw = draw;
 window.mouseClicked = mouseClicked;
