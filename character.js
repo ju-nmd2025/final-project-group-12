@@ -19,6 +19,7 @@ export let xAcceleration = 1.2; // How fast the character speeds up horizontally
 export let xFriction = 0.9; // Friction to slow down horizontal movement after key release
 export let gravityAcceleration = 0.9; // Gravity effect
 export let highScore = 0; // Current high score
+export let highScoreText = "error"; // Text to display depending on player score
 
 export let gameState = new GameState();
 
@@ -99,9 +100,12 @@ export function showEndScreen() {
       gameState.changeState(gameState.states.endScreen);
       // High score functionality
       if (score >= highScore) {
+        highScoreText = "NEW HIGH SCORE";
         highScore = score;
-        console.log(highScore + " " + score);
+      } else {
+        highScoreText = "Give It Another GO!!!";
       }
+      console.log(highScore + " " + score);
       push();
       fill(0, 0, 0, 150);
       quad(0, 0, 500, 0, 500, 700, 0, 700);
@@ -112,6 +116,13 @@ export function showEndScreen() {
       textSize(50);
       textAlign(CENTER);
       text("YOU ARE DEAD!", 500 / 2, 100);
+      pop();
+      push();
+      fill("white");
+      textStyle(BOLD);
+      textSize(25);
+      textAlign(CENTER);
+      text(highScoreText, 500 / 2, 150);
       pop();
       push();
       fill("white");
