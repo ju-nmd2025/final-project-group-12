@@ -1,7 +1,4 @@
-import { 
-  debugInfo, 
-  debugMode,
-} from "./utils.js";
+import { debugInfo, debugMode } from "./utils.js";
 
 import {
   setYPos,
@@ -70,11 +67,11 @@ function draw() {
   fill(0);
   strokeWeight(0);
   textSize(20);
-  textAlign(RIGHT, TOP);
-  text("HIGH SCORE: ", 495, 60); // Display high score
-  text(highScore, 490, 80);
+  textAlign(CENTER, TOP);
+  text("HIGH SCORE: ", 75, 20); // Display high score
+  text(highScore, 75, 40);
   pop();
-  
+
   showStartScreen(); // Draw the start screen
   showEndScreen(); // Draw the end screen
 }
