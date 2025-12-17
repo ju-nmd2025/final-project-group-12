@@ -127,11 +127,25 @@ export function showEndScreen() {
       text(highScoreText, 500 / 2, 150);
       pop();
       push();
+      fill("green");
+      textStyle(BOLD);
+      textSize(25);
+      textAlign(CENTER);
+      text(highScore, 500 / 2, 180);
+      pop();
+      push();
+      fill("white");
+      textStyle(BOLD);
+      textSize(25);
+      textAlign(CENTER);
+      text("YOUR SCORE:", 500 / 2, 220);
+      pop();
+      push();
       fill(highScoreColor);
       textStyle(BOLD);
       textSize(25);
       textAlign(CENTER);
-      text(score, 500 / 2, 200);
+      text(score, 500 / 2, 250);
       pop();
       retryButton.draw();
     } else {
