@@ -105,7 +105,6 @@ export function showEndScreen() {
       } else {
         highScoreText = "Give It Another GO!!!";
       }
-      console.log(highScore + " " + score);
       push();
       fill(0, 0, 0, 150);
       quad(0, 0, 500, 0, 500, 700, 0, 700);
