@@ -10,6 +10,8 @@ import {
 } from "./platforms.js";
 import { debugMode, GameState, button } from "./utils.js";
 
+import { resetBG } from "./game.js";
+
 export let xPos = 100; // Initial horizontal position
 export let yPos = 400; // Initial vertical position
 export let ySpeed = 1; // Initial vertical speed
@@ -74,6 +76,7 @@ export function restart() {
   xSpeed = 0;
   platforms.length = 0;
   platforms.push(...platformsPositionGen());
+  resetBG
 }
 
 export function mouseClicked() {

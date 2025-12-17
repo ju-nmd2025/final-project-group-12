@@ -1,4 +1,9 @@
-import { debugInfo, debugMode, changeHighScoreColor, randomFromRange } from "./utils.js";
+import { 
+  debugInfo, 
+  debugMode, 
+  changeHighScoreColor, 
+  randomFromRange 
+} from "./utils.js";
 
 import {
   setYPos,
@@ -33,13 +38,17 @@ let treeYPos = -700;
 let currentTreeIndex = 0;
 let treeScale = 1;
 
-let backgroundScroll = [0, -690];
+let backgroundScroll = [0, -700];
 let treesScroll = 0;
 
 function preload() {
   preloadCharacter();
   backgroundImg = loadImage("img/bg.png");
-  treesImg = [loadImage("img/trees/tree_1.png"), loadImage("img/trees/tree_2.png"), loadImage("img/trees/tree_3.png"), loadImage("img/trees/tree_4.png")];
+  treesImg = [
+    loadImage("img/trees/tree_1.png"), 
+    loadImage("img/trees/tree_2.png"), 
+    loadImage("img/trees/tree_3.png"), 
+    loadImage("img/trees/tree_4.png")];
 }
 
 function setup() {
@@ -54,11 +63,16 @@ function setup() {
   platforms.push(...platformsPositionGen());
 }
 
+export function resetBG() {
+  treeYPos = -700;
+  backgroundScroll = [0, -700];
+  treesScroll = 0;
+}
 
 function drawBackground() {
   imageMode(CORNER);
-  backgroundScroll[0] += Math.round(shift/3);
-  backgroundScroll[1] += Math.round(shift/3);
+  backgroundScroll[0] += Math.round(shift / 3);
+  backgroundScroll[1] += Math.round(shift / 3);
   push();
   noStroke();
   if (backgroundScroll[0] >= height) {
@@ -67,11 +81,9 @@ function drawBackground() {
   if (backgroundScroll[1] >= height) {
     backgroundScroll[1] = backgroundScroll[0] - height;
   }
-  image(backgroundImg, 0, backgroundScroll[0], width, height);
-  image(backgroundImg, 0, backgroundScroll[1], width, height);
+  image(backgroundImg, 0, backgroundScroll[0], width, height + 1);
+  image(backgroundImg, 0, backgroundScroll[1], width, height + 1);
   pop();
-
-
 }
 
 function TreesDraw() {
@@ -79,20 +91,19 @@ function TreesDraw() {
   imageMode(CORNER);
   tint(255, 240);
   drawingContext.filter = "blur(10px)";
-  treesScroll += shift*1.5;
+  treesScroll += shift * 1.5;
   treeYPos = treesScroll - 700;
 
   translate(width / 2, treeYPos);
   scale(treeScale, 1);
   image(treesImg[currentTreeIndex], -350, 0, 700, 700); // Use currentTreeIndex to select a random tree
-  if (treeYPos >= height){  
+  if (treeYPos >= height) {
     treesScroll = 0;
     treeYPos = -700;
     treeScale = Math.random() > 0.5 ? 1 : -1;
     currentTreeIndex = Math.floor(Math.random() * treesImg.length); // Randomly pick an index for the next tree
-  }  
+  }
   pop();
-
 }
 
 function draw() {
@@ -134,6 +145,9 @@ function draw() {
   pop();
   showStartScreen(); // Draw the start screen
   showEndScreen(); // Draw the end screen
+  if (frameRate() < 45) {
+    console.log("Low FPS detected: " + Math.round(frameRate()));
+  }
 }
 
 // Make setup(), draw(), and mouseClicked() globally available so p5.js can find them

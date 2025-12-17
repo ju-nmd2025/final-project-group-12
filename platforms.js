@@ -67,7 +67,7 @@ class Platform {
       // Normal platform color
       fill(150, 75, 0);
     }
-    rect(this.x, this.y, this.width, this.height); // Draw the platform
+    rect(this.x, this.y, this.width, this.height, 10); // Draw the platform
   }
 }
 
