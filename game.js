@@ -124,6 +124,14 @@ function draw() {
   text("Score: ", 495, 20); // Display score
   text(score, 490, 40);
   pop();
+  push();
+  fill(changeHighScoreColor(score, highScore));
+  strokeWeight(0);
+  textSize(20);
+  textAlign(CENTER, TOP);
+  text("HIGH SCORE: ", 75, 20); // Display high score
+  text(highScore, 75, 40);
+  pop();
   showStartScreen(); // Draw the start screen
   showEndScreen(); // Draw the end screen
 }
