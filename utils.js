@@ -38,6 +38,17 @@ export function debugInfo(ySpeed, xSpeed, xPos, yPos, shift) {
   pop();
 }
 
+// Change color of text during gameplay determined if the player has beaten thier previous score
+export function changeHighScoreColor(score, highScore) {
+  let color;
+  if (score >= highScore) {
+    color = "green"
+  } else {
+    color = "black"
+  }
+  return color
+}
+
 export class button {
   constructor(xPos, yPos, xSize, ySize, color, text) {
     this.xPos = xPos;
