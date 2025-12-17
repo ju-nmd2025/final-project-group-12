@@ -20,6 +20,7 @@ export let xFriction = 0.9; // Friction to slow down horizontal movement after k
 export let gravityAcceleration = 0.9; // Gravity effect
 export let highScore = 0; // Current high score
 export let highScoreText = "error"; // Text to display depending on player score
+export let highScoreColor = "error"; // color that is displayed on the endscreen depending on player score
 
 export let gameState = new GameState();
 
@@ -102,8 +103,10 @@ export function showEndScreen() {
       if (score >= highScore) {
         highScoreText = "NEW HIGH SCORE";
         highScore = score;
+        highScoreColor = "green";
       } else {
-        highScoreText = "Give It Another GO!!!";
+        highScoreText = "YOUR SCORE";
+        highScoreColor = "red";
       }
       push();
       fill(0, 0, 0, 150);
@@ -124,11 +127,11 @@ export function showEndScreen() {
       text(highScoreText, 500 / 2, 150);
       pop();
       push();
-      fill("white");
+      fill(highScoreColor);
       textStyle(BOLD);
       textSize(25);
       textAlign(CENTER);
-      text(`Your score is ${score}!`, 500 / 2, 200);
+      text(score, 500 / 2, 200);
       pop();
       retryButton.draw();
     } else {
