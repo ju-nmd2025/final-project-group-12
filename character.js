@@ -76,7 +76,7 @@ export function restart() {
   xSpeed = 0;
   platforms.length = 0;
   platforms.push(...platformsPositionGen());
-  resetBG
+  resetBG();
 }
 
 export function mouseClicked() {
