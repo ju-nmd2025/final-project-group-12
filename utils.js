@@ -42,7 +42,7 @@ export function debugInfo(ySpeed, xSpeed, xPos, yPos, shift) {
 export function changeHighScoreColor(score, highScore) {
   let color;
   if (0 >= highScore) {
-    color = color(0, 0, 0, 0);
+    color = [0, 0, 0, 0];
   } else if (score >= highScore) {
     color = "green";
   } else {
