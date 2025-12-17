@@ -38,15 +38,17 @@ export function debugInfo(ySpeed, xSpeed, xPos, yPos, shift) {
   pop();
 }
 
-// Change color of text during gameplay determined if the player has beaten thier previous score
+// Change color and visability of text during gameplay determined if the player has beaten thier previous score
 export function changeHighScoreColor(score, highScore) {
   let color;
-  if (score >= highScore) {
-    color = "green"
+  if (0 >= highScore) {
+    color = color(0, 0, 0, 0);
+  } else if (score >= highScore) {
+    color = "green";
   } else {
-    color = "black"
+    color = "black";
   }
-  return color
+  return color;
 }
 
 export class button {
