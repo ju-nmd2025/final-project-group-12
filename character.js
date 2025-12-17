@@ -101,12 +101,12 @@ export function showEndScreen() {
       gameState.changeState(gameState.states.endScreen);
       // High score functionality
       if (score >= highScore) {
-        highScoreText = "NEW HIGH SCORE";
+        highScoreText = "NEW HIGH SCORE:";
         highScore = score;
         highScoreColor = "green";
       } else {
-        highScoreText = "YOUR SCORE";
-        highScoreColor = "red";
+        highScoreText = "HIGH SCORE:";
+        highScoreColor = "white";
       }
       push();
       fill(0, 0, 0, 150);
@@ -120,14 +120,14 @@ export function showEndScreen() {
       text("YOU ARE DEAD!", 500 / 2, 100);
       pop();
       push();
-      fill("white");
+      fill(highScoreColor);
       textStyle(BOLD);
       textSize(25);
       textAlign(CENTER);
       text(highScoreText, 500 / 2, 150);
       pop();
       push();
-      fill("green");
+      fill(highScoreColor);
       textStyle(BOLD);
       textSize(25);
       textAlign(CENTER);
@@ -141,7 +141,7 @@ export function showEndScreen() {
       text("YOUR SCORE:", 500 / 2, 220);
       pop();
       push();
-      fill(highScoreColor);
+      fill("white");
       textStyle(BOLD);
       textSize(25);
       textAlign(CENTER);
