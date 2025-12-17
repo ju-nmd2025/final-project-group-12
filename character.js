@@ -20,15 +20,38 @@ export let gravityAcceleration = 0.9; // Gravity effect
 
 export let gameState = new GameState();
 
+let ball;
+let shadow_ball;
+export let ballMovement = 0;
+
 // Setter function for yPos to allow external modules to update it
 export function setYPos(newYPos) {
   yPos = newYPos;
 }
 
+export function preloadCharacter() {
+  ball = loadImage("img/soccer_ball.png");
+  // ball = loadImage("img/basketball_ball.png");
+  shadow_ball = loadImage("img/shadow_ball.png");
+}
+
+function characterChoose(characterType) {
+  if (characterType === "soccer") {
+    ball = loadImage("img/soccer_ball.png");
+  } else if (characterType === "basketball") {
+    ball = loadImage("img/basketball_ball.png");
+  }
+}
 export function characterShape(x, y, diameter) {
-  fill(100, 150, 255);
-  circle(x, y, diameter);
-  fill(255);
+  push();
+  imageMode(CENTER);
+  translate(x, y);
+  ballMovement += xSpeed/100;
+  rotate(ballMovement);
+  image(ball, 0, 0, diameter, diameter);
+  pop();
+  imageMode(CENTER);
+  image(shadow_ball, x, y, diameter-3, diameter-3);
 }
 
 // Buttons

@@ -26,7 +26,7 @@ export function randomFromRange(min, max) {
 }
 
 // Function to display debug information on the screen
-export function debugInfo(ySpeed, xSpeed, xPos, yPos, shift) {
+export function debugInfo(ySpeed, xSpeed, xPos, yPos, shift, ballmovement) {
   push();
   strokeWeight(0);
   fill(0);
@@ -35,6 +35,7 @@ export function debugInfo(ySpeed, xSpeed, xPos, yPos, shift) {
   text("X Pos: " + xPos.toFixed(2), 10, 60);
   text("Y Pos: " + yPos.toFixed(2), 10, 80);
   text("Shift: " + shift.toFixed(2), 10, 100);
+  text("Ball Movement: " + ballmovement.toFixed(2), 10, 120);
   pop();
 }
 
