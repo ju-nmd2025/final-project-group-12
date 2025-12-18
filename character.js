@@ -1,9 +1,252 @@
-export let character = {
-    x: 50,
-    y: 50,
-    w: 50,
-    h: 50,
-    draw() {
-        rect(this.x, this.y, this.w, this.h);
-    },
-};
+import {
+  isCameraScrolled,
+  platforms,
+  platformsPositionGen,
+  setIsCameraScrolled,
+  setScore,
+  score,
+  setMinY,
+  setMaxY,
+} from "./platforms.js";
+import { debugMode, GameState, button } from "./utils.js";
+
+import { resetBG } from "./game.js";
+
+export let charXPos = 100; // Initial horizontal position
+export let charYPos = 400; // Initial vertical position
+export let charYSpeed = 1; // Initial vertical speed
+export let charXSpeed = 0; // Current horizontal speed
+export let charDiameter = 50;
+export let charXAcceleration = 1.2; // How fast the character speeds up horizontally
+export let charXFriction = 0.9; // Friction to slow down horizontal movement after key release
+export let gravityAcceleration = 0.9; // Gravity effect
+export let highScore = 0; // Current high score
+export let highScoreText = "error"; // Text to display depending on player score
+export let highScoreColor = "error"; // color that is displayed on the endscreen depending on player score
+
+export let gameState = new GameState();
+
+let ball;
+let shadow_ball;
+export let ballMovement = 0;
+
+// Setter function for charYPos to allow external modules to update it
+export function setcharYPos(newcharYPos) {
+  charYPos = newcharYPos;
+}
+
+export function preloadCharacter() {
+  ball = loadImage("img/soccer_ball.png");
+  // ball = loadImage("img/basketball_ball.png");
+  shadow_ball = loadImage("img/shadow_ball.png");
+}
+
+function charChoose(charType) {
+  if (charType === "soccer") {
+    ball = loadImage("img/soccer_ball.png");
+  } else if (charType === "basketball") {
+    ball = loadImage("img/basketball_ball.png");
+  }
+}
+export function charShape(x, y, diameter) {
+  push();
+  imageMode(CENTER);
+  translate(x, y);
+  ballMovement += charXSpeed/100;
+  rotate(ballMovement);
+  image(ball, 0, 0, diameter, diameter);
+  pop();
+  imageMode(CENTER);
+  image(shadow_ball, x, y, diameter-3, diameter-3);
+}
+
+// Buttons
+const startButton = new button(250, 350, 250, 100, "blue", "Start");
+const retryButton = new button(250, 350, 200, 50, "green", "Retry");
+
+export function restart() {
+  gameState.changeState(gameState.states.game);
+  setIsCameraScrolled(false); // Use setter function to update isCameraScrolled
+  setScore(0); // Reset score to 0
+  setMinY(40); // Reset minY to initial value
+  setMaxY(100); // Reset maxY to initial value
+  charXPos = 100;
+  charYPos = 400;
+  charYSpeed = 1;
+  charXSpeed = 0;
+  platforms.length = 0;
+  platforms.push(...platformsPositionGen());
+  resetBG();
+}
+
+export function mouseClicked() {
+  //Retry button
+  if (
+    mouseX >= retryButton.xCalculateNegative &&
+    mouseX <= retryButton.xCalculatePosetive &&
+    mouseY >= retryButton.yCalculateNegative &&
+    mouseY <= retryButton.yCalculatePosetive &&
+    gameState.currentState === gameState.states.endScreen
+  ) {
+    restart();
+  } else if (
+    mouseX >= startButton.xCalculateNegative &&
+    mouseX <= startButton.xCalculatePosetive &&
+    mouseY >= startButton.yCalculateNegative &&
+    mouseY <= startButton.yCalculatePosetive &&
+    gameState.currentState === gameState.states.startScreen
+  ) {
+    restart();
+  }
+}
+
+// Make mouseClicked globally available so p5.js can find it
+window.mouseClicked = mouseClicked;
+
+export function showStartScreen() {
+  if (gameState.currentState === gameState.states.startScreen) {
+    push();
+    fill("white");
+    quad(0, 0, 500, 0, 500, 700, 0, 700);
+    pop();
+    push();
+    fill("black");
+    textStyle(BOLD);
+    textSize(50);
+    textAlign(CENTER);
+    text("Game Title", 500 / 2, 100);
+    pop();
+    startButton.draw();
+  }
+}
+
+export function showEndScreen() {
+  // If the player have made the camera scroll the player can trigger a game over
+  if (charYPos + charDiameter / 2 > height && isCameraScrolled === true) {
+    if (debugMode == false) {
+      gameState.changeState(gameState.states.endScreen);
+      // High score functionality
+      if (score >= highScore) {
+        highScoreText = "NEW HIGH SCORE:";
+        highScore = score;
+        highScoreColor = "green";
+      } else {
+        highScoreText = "HIGH SCORE:";
+        highScoreColor = "white";
+      }
+      push();
+      fill(0, 0, 0, 150);
+      quad(0, 0, 500, 0, 500, 700, 0, 700);
+      pop();
+      push();
+      fill("red");
+      textStyle(BOLD);
+      textSize(50);
+      textAlign(CENTER);
+      text("YOU ARE DEAD!", 500 / 2, 100);
+      pop();
+      push();
+      fill(highScoreColor);
+      textStyle(BOLD);
+      textSize(25);
+      textAlign(CENTER);
+      text(highScoreText, 500 / 2, 150);
+      pop();
+      push();
+      fill(highScoreColor);
+      textStyle(BOLD);
+      textSize(25);
+      textAlign(CENTER);
+      text(highScore, 500 / 2, 180);
+      pop();
+      push();
+      fill("white");
+      textStyle(BOLD);
+      textSize(25);
+      textAlign(CENTER);
+      text("YOUR SCORE:", 500 / 2, 220);
+      pop();
+      push();
+      fill("white");
+      textStyle(BOLD);
+      textSize(25);
+      textAlign(CENTER);
+      text(score, 500 / 2, 250);
+      pop();
+      retryButton.draw();
+    } else {
+      charYSpeed = -35;
+      charYPos = height - charDiameter / 2;
+    }
+  }
+}
+
+export function charCollision(platforms) {
+  // Ground Collision Logic
+  if (charYPos + charDiameter / 2 > height && isCameraScrolled === false) {
+    charYSpeed = -25;
+    charYPos = height - charDiameter / 2;
+  }
+
+  // Platform Collision Logic
+  for (let p of platforms) {
+    // Remove platform() drawing call — already drawn in drawPlatforms()
+    let ballBottom = charYPos + charDiameter / 2;
+
+    if (charYSpeed > 0) {
+      if (charXPos + 10 > p.x && charXPos - 10 < p.x + p.width) {
+        if (ballBottom >= p.y && ballBottom <= p.y + 25) {
+          if (p.touched == false) {
+            if (p.type === "breaking") {
+              p.touched = true;
+            }
+            charYSpeed = -25;
+            charYPos = p.y - charDiameter / 2;
+          }
+        }
+      }
+    }
+  }
+}
+
+export function charMovement() {
+  charYSpeed += gravityAcceleration; // Apply gravity
+  charYPos += charYSpeed; // Update vertical position
+
+  // --- Ground Collision Logic ---
+
+  // --- Horizontal Movement Logic ---
+  if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
+    // When the left arrow or 'A' key is pressed
+    if (charXSpeed >= -20) {
+      // Limit max speed to the left
+      charXSpeed -= charXAcceleration;
+    }
+  } else if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
+    // When the right arrow or 'D' key is pressed
+    if (charXSpeed <= 20) {
+      // Limit max speed to the right
+      charXSpeed += charXAcceleration;
+    }
+  } else {
+    // Apply friction when no keys are pressed
+    if (charXSpeed != 0) charXSpeed *= charXFriction;
+  }
+
+  charXPos += charXSpeed; // Update horizontal position
+
+  // --- Screen "Wrap-Around" Logic ---
+  let half = charDiameter / 2;
+
+  // Check if the character moves past the right edge
+  if (charXPos - half > width) {
+    // Reappear on the left side
+    charXPos = -half;
+  }
+
+  // Check if the jumper moves past the left edge
+  if (charXPos + half < 0) {
+    // Reappear on the right side
+    charXPos = width + half;
+  }
+}
