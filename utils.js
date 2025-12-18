@@ -1,9 +1,9 @@
 // Class that keep track of gamestates
 export class GameState {
   states = {
-    //GAMEPLAY STATES
+    // GAMEPLAY STATES
     game: "game",
-    //UI STATES
+    // UI STATES
     startScreen: "startScreen",
     endScreen: "endScreen",
   };
@@ -39,7 +39,7 @@ export function debugInfo(ySpeed, xSpeed, xPos, yPos, shift, ballmovement) {
   pop();
 }
 
-// Change color and visability of text during gameplay determined if the player has beaten thier previous score
+// Change color and visability of text during gameplay determined if the player has beaten thier previous score or if the player score is zero
 export function changeHighScoreColor(score, highScore) {
   let color;
   if (0 >= highScore) {

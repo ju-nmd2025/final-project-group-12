@@ -21,8 +21,8 @@ export let xAcceleration = 1.2; // How fast the character speeds up horizontally
 export let xFriction = 0.9; // Friction to slow down horizontal movement after key release
 export let gravityAcceleration = 0.9; // Gravity effect
 export let highScore = 0; // Current high score
-export let highScoreText = "error"; // Text to display depending on player score
-export let highScoreColor = "error"; // color that is displayed on the endscreen depending on player score
+let highScoreText = "error"; // Text to display depending on player score
+let highScoreColor = "error"; // color that is displayed on the endscreen depending on player score
 
 export let gameState = new GameState();
 
@@ -114,7 +114,7 @@ export function showStartScreen() {
     textStyle(BOLD);
     textSize(50);
     textAlign(CENTER);
-    text("Game Title", 500 / 2, 100);
+    text("JUMP SPHERE", 500 / 2, 100);
     pop();
     startButton.draw();
   }
@@ -212,8 +212,6 @@ export function characterCollision(platforms) {
 export function characterMovement() {
   ySpeed += gravityAcceleration; // Apply gravity
   yPos += ySpeed; // Update vertical position
-
-  // --- Ground Collision Logic ---
 
   // --- Horizontal Movement Logic ---
   if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
