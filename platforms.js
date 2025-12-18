@@ -1,5 +1,5 @@
 import { randomFromRange } from "./utils.js";
-import { setYPos as updateYPos } from "./character.js";
+import { setcharYPos as updatecharYPos } from "./character.js";
 
 export const breakingPlatfrormChance = 0.1; // A probability of platform being spawned as the moving type
 export const movingPlatformChance = 0.1; // A probability of platform being spawned as the moving type
@@ -29,9 +29,9 @@ export function setMaxY(value) {
   maxY = value;
 }
 
-// Re-export setYPos for use in game.js (wrapper that calls character.js setter)
-export function setYPos(newYPos) {
-  updateYPos(newYPos);
+// Re-export setcharYPos for use in game.js
+export function setcharYPos(newcharYPos) {
+  updatecharYPos(newcharYPos);
 }
 
 export let platforms = []; // An empty list of platfroms that will be populated in game.js later
@@ -112,13 +112,13 @@ export function platformsDraw(platforms) {
 }
 
 // Function to handle platform scrolling
-export function platformScroll(platforms, yPos) {
+export function platformScroll(platforms, charYPos) {
   shift = 0; // Reset shift at the start of the function
-  if (yPos < 200) {
+  if (charYPos < 200) {
     isCameraScrolled = true; // Means the camera has scrolled and now the end screen logic can be applied in character.js
-    shift = 200 - yPos; // Calculate the shift amount based on how far the character is above the 200 yPos threshold
-    yPos = 200;
-    score += Math.floor(shift / 10); // Locks the character's yPos to 200 to create the scrolling effect
+    shift = 200 - charYPos; // Calculate the shift amount based on how far the character is above the 200 charYPos threshold
+    charYPos = 200;
+    score += Math.floor(shift / 10); // Locks the character's charYPos to 200 to create the scrolling effect
 
     // Move all platforms down by the shift amount
     for (let p of platforms) {
@@ -161,5 +161,5 @@ export function platformScroll(platforms, yPos) {
       }
     }
   }
-  return { newYPos: yPos, shift: shift };
+  return { newcharYPos: charYPos, shift: shift };
 }

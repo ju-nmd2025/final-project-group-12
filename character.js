@@ -12,13 +12,13 @@ import { debugMode, GameState, button } from "./utils.js";
 
 import { resetBG } from "./game.js";
 
-export let xPos = 100; // Initial horizontal position
-export let yPos = 400; // Initial vertical position
-export let ySpeed = 1; // Initial vertical speed
-export let xSpeed = 0; // Current horizontal speed
-export let characterDiameter = 50;
-export let xAcceleration = 1.2; // How fast the character speeds up horizontally
-export let xFriction = 0.9; // Friction to slow down horizontal movement after key release
+export let charXPos = 100; // Initial horizontal position
+export let charYPos = 400; // Initial vertical position
+export let charYSpeed = 1; // Initial vertical speed
+export let charXSpeed = 0; // Current horizontal speed
+export let charDiameter = 50;
+export let charXAcceleration = 1.2; // How fast the character speeds up horizontally
+export let charXFriction = 0.9; // Friction to slow down horizontal movement after key release
 export let gravityAcceleration = 0.9; // Gravity effect
 export let highScore = 0; // Current high score
 export let highScoreText = "error"; // Text to display depending on player score
@@ -30,9 +30,9 @@ let ball;
 let shadow_ball;
 export let ballMovement = 0;
 
-// Setter function for yPos to allow external modules to update it
-export function setYPos(newYPos) {
-  yPos = newYPos;
+// Setter function for charYPos to allow external modules to update it
+export function setcharYPos(newcharYPos) {
+  charYPos = newcharYPos;
 }
 
 export function preloadCharacter() {
@@ -41,18 +41,18 @@ export function preloadCharacter() {
   shadow_ball = loadImage("img/shadow_ball.png");
 }
 
-function characterChoose(characterType) {
-  if (characterType === "soccer") {
+function charChoose(charType) {
+  if (charType === "soccer") {
     ball = loadImage("img/soccer_ball.png");
-  } else if (characterType === "basketball") {
+  } else if (charType === "basketball") {
     ball = loadImage("img/basketball_ball.png");
   }
 }
-export function characterShape(x, y, diameter) {
+export function charShape(x, y, diameter) {
   push();
   imageMode(CENTER);
   translate(x, y);
-  ballMovement += xSpeed/100;
+  ballMovement += charXSpeed/100;
   rotate(ballMovement);
   image(ball, 0, 0, diameter, diameter);
   pop();
@@ -70,10 +70,10 @@ export function restart() {
   setScore(0); // Reset score to 0
   setMinY(40); // Reset minY to initial value
   setMaxY(100); // Reset maxY to initial value
-  xPos = 100;
-  yPos = 400;
-  ySpeed = 1;
-  xSpeed = 0;
+  charXPos = 100;
+  charYPos = 400;
+  charYSpeed = 1;
+  charXSpeed = 0;
   platforms.length = 0;
   platforms.push(...platformsPositionGen());
   resetBG();
@@ -122,7 +122,7 @@ export function showStartScreen() {
 
 export function showEndScreen() {
   // If the player have made the camera scroll the player can trigger a game over
-  if (yPos + characterDiameter / 2 > height && isCameraScrolled === true) {
+  if (charYPos + charDiameter / 2 > height && isCameraScrolled === true) {
     if (debugMode == false) {
       gameState.changeState(gameState.states.endScreen);
       // High score functionality
@@ -175,33 +175,33 @@ export function showEndScreen() {
       pop();
       retryButton.draw();
     } else {
-      ySpeed = -35;
-      yPos = height - characterDiameter / 2;
+      charYSpeed = -35;
+      charYPos = height - charDiameter / 2;
     }
   }
 }
 
-export function characterCollision(platforms) {
+export function charCollision(platforms) {
   // Ground Collision Logic
-  if (yPos + characterDiameter / 2 > height && isCameraScrolled === false) {
-    ySpeed = -25;
-    yPos = height - characterDiameter / 2;
+  if (charYPos + charDiameter / 2 > height && isCameraScrolled === false) {
+    charYSpeed = -25;
+    charYPos = height - charDiameter / 2;
   }
 
   // Platform Collision Logic
   for (let p of platforms) {
     // Remove platform() drawing call — already drawn in drawPlatforms()
-    let ballBottom = yPos + characterDiameter / 2;
+    let ballBottom = charYPos + charDiameter / 2;
 
-    if (ySpeed > 0) {
-      if (xPos + 10 > p.x && xPos - 10 < p.x + p.width) {
+    if (charYSpeed > 0) {
+      if (charXPos + 10 > p.x && charXPos - 10 < p.x + p.width) {
         if (ballBottom >= p.y && ballBottom <= p.y + 25) {
           if (p.touched == false) {
             if (p.type === "breaking") {
               p.touched = true;
             }
-            ySpeed = -25;
-            yPos = p.y - characterDiameter / 2;
+            charYSpeed = -25;
+            charYPos = p.y - charDiameter / 2;
           }
         }
       }
@@ -209,44 +209,44 @@ export function characterCollision(platforms) {
   }
 }
 
-export function characterMovement() {
-  ySpeed += gravityAcceleration; // Apply gravity
-  yPos += ySpeed; // Update vertical position
+export function charMovement() {
+  charYSpeed += gravityAcceleration; // Apply gravity
+  charYPos += charYSpeed; // Update vertical position
 
   // --- Ground Collision Logic ---
 
   // --- Horizontal Movement Logic ---
   if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
     // When the left arrow or 'A' key is pressed
-    if (xSpeed >= -20) {
+    if (charXSpeed >= -20) {
       // Limit max speed to the left
-      xSpeed -= xAcceleration;
+      charXSpeed -= charXAcceleration;
     }
   } else if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
     // When the right arrow or 'D' key is pressed
-    if (xSpeed <= 20) {
+    if (charXSpeed <= 20) {
       // Limit max speed to the right
-      xSpeed += xAcceleration;
+      charXSpeed += charXAcceleration;
     }
   } else {
     // Apply friction when no keys are pressed
-    if (xSpeed != 0) xSpeed *= xFriction;
+    if (charXSpeed != 0) charXSpeed *= charXFriction;
   }
 
-  xPos += xSpeed; // Update horizontal position
+  charXPos += charXSpeed; // Update horizontal position
 
   // --- Screen "Wrap-Around" Logic ---
-  let half = characterDiameter / 2;
+  let half = charDiameter / 2;
 
   // Check if the character moves past the right edge
-  if (xPos - half > width) {
+  if (charXPos - half > width) {
     // Reappear on the left side
-    xPos = -half;
+    charXPos = -half;
   }
 
   // Check if the jumper moves past the left edge
-  if (xPos + half < 0) {
+  if (charXPos + half < 0) {
     // Reappear on the right side
-    xPos = width + half;
+    charXPos = width + half;
   }
 }

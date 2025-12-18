@@ -26,14 +26,14 @@ export function randomFromRange(min, max) {
 }
 
 // Function to display debug information on the screen
-export function debugInfo(ySpeed, xSpeed, xPos, yPos, shift, ballmovement) {
+export function debugInfo(charYSpeed, charXSpeed, charXPos, charYPos, shift, ballmovement) {
   push();
   strokeWeight(0);
   fill(0);
-  text("Gravity: " + Math.round(ySpeed), 10, 20);
-  text("X Speed: " + xSpeed.toFixed(2), 10, 40);
-  text("X Pos: " + xPos.toFixed(2), 10, 60);
-  text("Y Pos: " + yPos.toFixed(2), 10, 80);
+  text("Gravity: " + Math.round(charYSpeed), 10, 20);
+  text("X Speed: " + charXSpeed.toFixed(2), 10, 40);
+  text("X Pos: " + charXPos.toFixed(2), 10, 60);
+  text("Y Pos: " + charYPos.toFixed(2), 10, 80);
   text("Shift: " + shift.toFixed(2), 10, 100);
   text("Ball Movement: " + ballmovement.toFixed(2), 10, 120);
   pop();
@@ -53,14 +53,14 @@ export function changeHighScoreColor(score, highScore) {
 }
 
 export class button {
-  constructor(xPos, yPos, xSize, ySize, color, text) {
-    this.xPos = xPos;
-    this.yPos = yPos;
+  constructor(charXPos, charYPos, xSize, ySize, color, text) {
+    this.charXPos = charXPos;
+    this.charYPos = charYPos;
     this.ySize = ySize;
-    this.xCalculatePosetive = xPos + xSize / 2;
-    this.xCalculateNegative = xPos - xSize / 2;
-    this.yCalculatePosetive = yPos + ySize / 2;
-    this.yCalculateNegative = yPos - ySize / 2;
+    this.xCalculatePosetive = charXPos + xSize / 2;
+    this.xCalculateNegative = charXPos - xSize / 2;
+    this.yCalculatePosetive = charYPos + ySize / 2;
+    this.yCalculateNegative = charYPos - ySize / 2;
     this.color = color;
     this.text = text;
   }
@@ -84,7 +84,7 @@ export class button {
     textStyle(BOLD);
     textSize(this.ySize - 10);
     textAlign(CENTER, CENTER);
-    text(this.text, this.xPos, this.yPos);
+    text(this.text, this.charXPos, this.charYPos);
     pop();
   }
 }
